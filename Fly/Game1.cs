@@ -20,6 +20,7 @@ namespace Fly
         private Texture2D textureGround; //текстура земли
         private Texture2D textureDeform; //текстура круга деформации
         private Texture2D textureBullet; //текстура пули
+        private Texture2D texturePlane;
 
         private uint[] pixelDeformData; //массив круга деформации
         private List<Vector2> bullets; //массив пуль
@@ -28,6 +29,7 @@ namespace Fly
         private MouseState currentMouseState;
 
         private float speed = 2f;
+        private float rotate;
 
         public Game1()
             : base()
@@ -55,6 +57,7 @@ namespace Fly
             textureGround = Content.Load<Texture2D>("level");
             textureDeform = Content.Load<Texture2D>("deform");
             textureBullet = Content.Load<Texture2D>("bullet");
+            texturePlane = Content.Load<Texture2D>("plane");
 
             //объявление массива круга деформации
             pixelDeformData = new uint[textureDeform.Width * textureDeform.Height];
@@ -72,6 +75,7 @@ namespace Fly
         protected override void Update(GameTime gameTime)
         {
             UpdateMouse();
+            
 
             base.Update(gameTime);
         }
@@ -84,6 +88,8 @@ namespace Fly
 
             spriteBatch.Draw(textureSky, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(textureGround, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(texturePlane, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(texturePlane, new Vector2(400, 300), null, Color.White, rotate, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
             //spriteBatch.Draw(textureDeform, mousePosition, Color.White);
 
             if (bullets.Count > 0)
