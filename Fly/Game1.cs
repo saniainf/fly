@@ -146,8 +146,8 @@ namespace Fly
                     //проверка выхода за границы экрана
                     if (bullets[i].X < 0 ||
                         bullets[i].Y < 0 ||
-                        bullets[i].X > graphics.PreferredBackBufferWidth ||
-                        bullets[i].Y > graphics.PreferredBackBufferHeight)
+                        bullets[i].X >= graphics.PreferredBackBufferWidth ||
+                        bullets[i].Y >= graphics.PreferredBackBufferHeight)
                         bullets.RemoveAt(i);
 
                     //проверка столкновения с землей
