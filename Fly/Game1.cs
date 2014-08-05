@@ -95,7 +95,7 @@ namespace Fly
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(); //блок отрисовки
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null); //блок отрисовки
 
             spriteBatch.Draw(textureSky, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(textureGround, new Vector2(0, 0), Color.White);
