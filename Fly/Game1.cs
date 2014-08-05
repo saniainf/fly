@@ -75,7 +75,18 @@ namespace Fly
         protected override void Update(GameTime gameTime)
         {
             UpdateMouse();
-            
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+                this.Exit();
+
+            //if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            //    PlayerPosition.Y -= 10f;
+            //if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            //    PlayerPosition.Y += 10f;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                rotate -= 0.1f;
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                rotate += 0.1f;
 
             base.Update(gameTime);
         }
@@ -89,7 +100,7 @@ namespace Fly
             spriteBatch.Draw(textureSky, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(textureGround, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(texturePlane, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(texturePlane, new Vector2(400, 300), null, Color.White, rotate, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texturePlane, new Vector2(400, 300), null, Color.White, rotate, new Vector2(texturePlane.Width / 2, texturePlane.Height / 2), 1f, SpriteEffects.None, 0);
             //spriteBatch.Draw(textureDeform, mousePosition, Color.White);
 
             if (bullets.Count > 0)
