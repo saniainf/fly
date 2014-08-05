@@ -40,6 +40,9 @@ namespace Fly
         {
             this.IsMouseVisible = true;
             base.Initialize();
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
