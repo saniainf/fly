@@ -23,28 +23,32 @@ namespace Fly
         private Texture2D texturePlane;
 
         private uint[] pixelDeformData; //массив круга деформации
-        private List<Vector2> bullets; //массив пуль
+        private List<Bullet> bullets; //массив пуль
 
+        private Vector2 planePosition;
         private Vector2 mousePosition;
         private MouseState currentMouseState;
+        private KeyboardState currentKeyboardState;
 
-        private float speed = 2f;
-        private float rotate;
+        private float speedBullet = 4f;
+        private float speedPlane = 2f;
+        private float rotatePlate;
 
         public Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 600;
+            graphics.PreferredBackBufferWidth = 800;
             Content.RootDirectory = "Content";
+
+            planePosition = new Vector2(400f, 300f);
         }
 
         protected override void Initialize()
         {
             this.IsMouseVisible = true;
             base.Initialize();
-            graphics.PreferredBackBufferHeight = 600;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
@@ -64,7 +68,7 @@ namespace Fly
             //заполнение массива
             textureDeform.GetData(pixelDeformData, 0, textureDeform.Width * textureDeform.Height);
             //инициализация массива пуль, Count 0
-            bullets = new List<Vector2>();
+            bullets = new List<Bullet>();
         }
 
         protected override void UnloadContent()
@@ -74,7 +78,9 @@ namespace Fly
 
         protected override void Update(GameTime gameTime)
         {
-            UpdateMouse();
+            UpdatePlane();
+            UpdateBullets();
+            UpdateTest();
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -84,9 +90,9 @@ namespace Fly
             //if (Keyboard.GetState().IsKeyDown(Keys.Down))
             //    PlayerPosition.Y += 10f;
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                rotate -= 0.1f;
+                rotatePlate -= 0.04f;
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                rotate += 0.1f;
+                rotatePlate += 0.04f;
 
             base.Update(gameTime);
         }
@@ -95,19 +101,18 @@ namespace Fly
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null); //блок отрисовки
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null); //блок отрисовки
 
             spriteBatch.Draw(textureSky, new Vector2(0, 0), Color.White);
             spriteBatch.Draw(textureGround, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(texturePlane, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(texturePlane, new Vector2(400, 300), null, Color.White, rotate, new Vector2(texturePlane.Width / 2, texturePlane.Height / 2), 1f, SpriteEffects.None, 0);
+            spriteBatch.Draw(texturePlane, planePosition, null, Color.White, rotatePlate, new Vector2(texturePlane.Width / 2, texturePlane.Height / 2), 1f, SpriteEffects.None, 0);
             //spriteBatch.Draw(textureDeform, mousePosition, Color.White);
 
             if (bullets.Count > 0)
             {
-                foreach (Vector2 bullet in bullets)
+                foreach (Bullet bullet in bullets)
                 {
-                    spriteBatch.Draw(textureBullet, bullet, Color.White);
+                    spriteBatch.Draw(textureBullet, bullet.position, Color.White);
                 }
             }
 
@@ -116,20 +121,46 @@ namespace Fly
             base.Draw(gameTime);
         }
 
+        protected void UpdateTest()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                textureGround.SetData(0, new Rectangle(0, 0, 64, 64), pixelDeformData, 0, 4096);
+                //объявление массива земли
+                uint[] pixelGroundData = new uint[(textureGround.Width - 1) * textureGround.Height];
+                uint[] pixelGroundData1px = new uint[textureGround.Height];
+                //заполнение массива земли
+                textureGround.GetData(0, new Rectangle(0, 0, 1, 600), pixelGroundData1px, 0, 600);
+                textureGround.GetData(0, new Rectangle(1, 0, 799, 600), pixelGroundData, 0, 479400);
+                //обновить текстуру земли
+                textureGround.SetData(0, new Rectangle(0, 0, 799, 600), pixelGroundData, 0, 479400);
+                textureGround.SetData(0, new Rectangle(799, 0, 1, 600), pixelGroundData1px, 0, 600);
+            }
+        }
 
-        protected void UpdateMouse()
+        protected void UpdatePlane()
         {
             MouseState previousMouseState = currentMouseState;
+            KeyboardState previousKeyboardState = currentKeyboardState;
             currentMouseState = Mouse.GetState();
+            currentKeyboardState = Keyboard.GetState();
             mousePosition = new Vector2(currentMouseState.X, currentMouseState.Y);
+
+            Vector2 velocityPlane = speedPlane * new Vector2((float)Math.Cos(rotatePlate), (float)Math.Sin(rotatePlate));
+            planePosition += velocityPlane;
 
             //fire
             if (previousMouseState.LeftButton == ButtonState.Pressed &&
-              currentMouseState.LeftButton == ButtonState.Released)
-            {
-                bullets.Add(new Vector2(mousePosition.X, mousePosition.Y));
-            }
+                currentMouseState.LeftButton == ButtonState.Released)
+                bullets.Add(new Bullet(rotatePlate, new Vector2(mousePosition.X, mousePosition.Y)));
 
+            if (previousKeyboardState.IsKeyUp(Keys.Space) &&
+                currentKeyboardState.IsKeyDown(Keys.Space))
+                bullets.Add(new Bullet(rotatePlate, planePosition));
+        }
+
+        protected void UpdateBullets()
+        {
             if (bullets.Count > 0)
             {
                 //объявление массива земли
@@ -141,20 +172,22 @@ namespace Fly
                 for (int i = 0; i < bullets.Count; i++)
                 {
                     //движение пули
-                    bullets[i] = new Vector2(bullets[i].X, bullets[i].Y + speed);
+                    //bullets[i].position = new Vector2(bullets[i].position.X, bullets[i].position.Y + speed);
+                    Vector2 velocityBullet = speedBullet * new Vector2((float)Math.Cos(bullets[i].angle), (float)Math.Sin(bullets[i].angle));
+                    bullets[i].position += velocityBullet;
 
                     //проверка выхода за границы экрана
-                    if (bullets[i].X < 0 ||
-                        bullets[i].Y < 0 ||
-                        bullets[i].X >= graphics.PreferredBackBufferWidth ||
-                        bullets[i].Y >= graphics.PreferredBackBufferHeight)
+                    if (bullets[i].position.X < 0 ||
+                        bullets[i].position.Y < 0 ||
+                        bullets[i].position.X >= graphics.PreferredBackBufferWidth ||
+                        bullets[i].position.Y >= graphics.PreferredBackBufferHeight)
                         bullets.RemoveAt(i);
 
                     //проверка столкновения с землей
-                    else if (pixelGroundData[(int)bullets[i].X + (int)bullets[i].Y * textureGround.Width] != 0)
+                    else if (pixelGroundData[(int)bullets[i].position.X + (int)bullets[i].position.Y * textureGround.Width] != 0)
                     {
-                        float correctX = bullets[i].X - textureDeform.Width / 2;
-                        float correctY = bullets[i].Y - textureDeform.Height / 2;
+                        float correctX = bullets[i].position.X - textureDeform.Width / 2;
+                        float correctY = bullets[i].position.Y - textureDeform.Height / 2;
 
                         for (int x = 0; x < textureDeform.Width; x++)
                         {
@@ -187,10 +220,22 @@ namespace Fly
                         }
                         bullets.RemoveAt(i);
                     }
-                    //обновить текстуру земли
-                    textureGround.SetData(pixelGroundData);
                 }
+                //обновить текстуру земли
+                textureGround.SetData(pixelGroundData);
             }
+        }
+    }
+
+    public class Bullet
+    {
+        public float angle;
+        public Vector2 position;
+
+        public Bullet(float _angle, Vector2 _position)
+        {
+            angle = _angle;
+            position = _position;
         }
     }
 }
