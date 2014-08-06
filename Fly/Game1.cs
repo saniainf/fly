@@ -33,6 +33,7 @@ namespace Fly
         private float speedBullet = 4f;
         private float speedPlane = 2f;
         private float rotatePlate;
+        private float correctGroundX = 112f;
 
         public Game1()
             : base()
@@ -80,7 +81,7 @@ namespace Fly
         {
             UpdatePlane();
             UpdateBullets();
-            UpdateTest();
+            //UpdateTest();
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -104,7 +105,7 @@ namespace Fly
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null); //блок отрисовки
 
             spriteBatch.Draw(textureSky, new Vector2(0, 0), Color.White);
-            spriteBatch.Draw(textureGround, new Vector2(0, 0), Color.White);
+            spriteBatch.Draw(textureGround, new Vector2(-correctGroundX, 0), Color.White);
             spriteBatch.Draw(texturePlane, planePosition, null, Color.White, rotatePlate, new Vector2(texturePlane.Width / 2, texturePlane.Height / 2), 1f, SpriteEffects.None, 0);
             //spriteBatch.Draw(textureDeform, mousePosition, Color.White);
 
@@ -123,19 +124,18 @@ namespace Fly
 
         protected void UpdateTest()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                textureGround.SetData(0, new Rectangle(0, 0, 64, 64), pixelDeformData, 0, 4096);
-                //объявление массива земли
-                uint[] pixelGroundData = new uint[(textureGround.Width - 1) * textureGround.Height];
-                uint[] pixelGroundData1px = new uint[textureGround.Height];
-                //заполнение массива земли
-                textureGround.GetData(0, new Rectangle(0, 0, 1, 600), pixelGroundData1px, 0, 600);
-                textureGround.GetData(0, new Rectangle(1, 0, 799, 600), pixelGroundData, 0, 479400);
-                //обновить текстуру земли
-                textureGround.SetData(0, new Rectangle(0, 0, 799, 600), pixelGroundData, 0, 479400);
-                textureGround.SetData(0, new Rectangle(799, 0, 1, 600), pixelGroundData1px, 0, 600);
-            }
+            //if (Keyboard.GetState().IsKeyDown(Keys.A))
+            //{
+            //объявление массива земли
+            uint[] pixelGroundData = new uint[(textureGround.Width - 1) * textureGround.Height];
+            uint[] pixelGroundData1px = new uint[textureGround.Height];
+            //заполнение массива земли
+            textureGround.GetData(0, new Rectangle(0, 0, 1, 600), pixelGroundData1px, 0, 600);
+            textureGround.GetData(0, new Rectangle(1, 0, 1023, 600), pixelGroundData, 0, 613800);
+            //обновить текстуру земли
+            textureGround.SetData(0, new Rectangle(0, 0, 1023, 600), pixelGroundData, 0, 613800);
+            textureGround.SetData(0, new Rectangle(1023, 0, 1, 600), pixelGroundData1px, 0, 600);
+            //}
         }
 
         protected void UpdatePlane()
@@ -193,26 +193,22 @@ namespace Fly
                         {
                             for (int y = 0; y < textureDeform.Height; y++)
                             {
-                                if ((correctX + x) < textureGround.Width &&
-                                    (correctY + y) < textureGround.Height &&
-                                    (correctX + x) >= 0 &&
+                                if ((correctY + y) < textureGround.Height &&
                                     (correctY + y) >= 0)
                                 {
                                     if (pixelDeformData[x + y * textureDeform.Width] != 0 &&
-                                        pixelGroundData[((int)correctX + x) + ((int)correctY + y) * textureGround.Width] != 0)
+                                        pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] != 0)
                                     {
                                         //если текущий пиксель в деф.круге белый                
                                         if (pixelDeformData[x + y * textureDeform.Width] == 4294967295)
                                         {
                                             //заменить на альфу в текстуре земли
-                                            pixelGroundData[((int)correctX + x) + ((int)correctY + y)
-                                              * textureGround.Width] = 0;
+                                            pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] = 0;
                                         }
                                         else
                                         {
                                             //если не белый то пиксель с деф.текстуры поставить в текстуру земли
-                                            pixelGroundData[((int)correctX + x) + ((int)correctY + y)
-                                              * textureGround.Width] = pixelDeformData[x + y * textureDeform.Width];
+                                            pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] = pixelDeformData[x + y * textureDeform.Width];
                                         }
                                     }
                                 }
