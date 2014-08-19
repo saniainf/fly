@@ -16,6 +16,10 @@ namespace Fly
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        enum GameStates { TitleScreen, Playing, PlayerDead, GameOver };
+        GameStates gameStates = GameStates.TitleScreen;
+        Texture2D spriteSheet;
+
         public Level()
             : base()
         {
@@ -36,6 +40,8 @@ namespace Fly
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
+
             base.LoadContent();
         }
 
@@ -46,12 +52,32 @@ namespace Fly
 
         protected override void Update(GameTime gameTime)
         {
+            switch (gameStates)
+            {
+                case GameStates.TitleScreen:
+                    break;
+
+                case GameStates.Playing:
+                    break;
+
+                case GameStates.PlayerDead:
+                    break;
+
+                case GameStates.GameOver:
+                    break;
+            }
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
+
+            if (gameStates == GameStates.Playing)
+            {
+
+            }
 
             base.Draw(gameTime);
         }

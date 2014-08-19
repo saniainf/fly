@@ -197,18 +197,18 @@ namespace Fly
                                     (correctY + y) >= 0)
                                 {
                                     if (pixelDeformData[x + y * textureDeform.Width] != 0 &&
-                                        pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] != 0)
+                                        pixelGroundData[(x + (int)correctX + ((int)correctY + y)) * textureGround.Width] != 0)
                                     {
                                         //если текущий пиксель в деф.круге белый                
                                         if (pixelDeformData[x + y * textureDeform.Width] == 4294967295)
                                         {
                                             //заменить на альфу в текстуре земли
-                                            pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] = 0;
+                                            pixelGroundData[(x + (int)correctX) + ((int)correctY + y) * textureGround.Width] = 0;
                                         }
                                         else
                                         {
                                             //если не белый то пиксель с деф.текстуры поставить в текстуру земли
-                                            pixelGroundData[(x + (int)correctX + (int)correctGroundX) + ((int)correctY + y) * textureGround.Width] = pixelDeformData[x + y * textureDeform.Width];
+                                            pixelGroundData[(x + (int)correctX) + ((int)correctY + y) * textureGround.Width] = pixelDeformData[x + y * textureDeform.Width];
                                         }
                                     }
                                 }
