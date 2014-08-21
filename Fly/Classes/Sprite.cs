@@ -65,6 +65,12 @@ namespace Fly.Classes
             set { currentFrame = (int)MathHelper.Clamp(value, 0, frames.Count - 1); }
         }
 
+        public float FrameTime
+        {
+            get { return frameTime; }
+            set { frameTime = MathHelper.Max(0, value); }
+        }
+
         public Rectangle Source
         {
             get { return frames[currentFrame]; }
@@ -78,6 +84,30 @@ namespace Fly.Classes
         public Vector2 Center
         {
             get { return location + new Vector2(frameWidth / 2, frameHeight / 2); }
+        }
+
+        public void AddFrame(Rectangle frameRectangle)
+        {
+            frames.Add(frameRectangle);
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            timeForCurrentFrame += elapsed;
+
+            if (timeForCurrentFrame >= FrameTime)
+            {
+                currentFrame = (currentFrame + 1) % (frames.Count);
+                timeForCurrentFrame = 0;
+            }
+
+            location += (velocity * elapsed);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(Texture, Center, Source, tintColor, rotation, new Vector2(frameWidth / 2, frameHeight / 2), 1.0f, SpriteEffects.None, 0.0f);
         }
     }
 }

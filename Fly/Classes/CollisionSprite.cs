@@ -13,6 +13,12 @@ namespace Fly.Classes
         public int BoundingXPadding = 0;
         public int BoundingYPadding = 0;
 
+        public CollisionSprite(Texture2D texture, Rectangle initialFrame, Vector2 location, Vector2 velocity)
+            :base (texture, initialFrame, location, velocity)
+        {
+
+        }
+
         public Rectangle BoundingBoxRect
         {
             get
