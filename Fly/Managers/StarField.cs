@@ -10,7 +10,7 @@ namespace Fly.Managers
 {
     class StarField
     {
-        private List<Sprite> stars = new List<Sprite>();
+        private List<Star> stars = new List<Star>();
         private int screenWidth = 800;
         private int screenHeight = 600;
         private Random random = new Random();
@@ -22,8 +22,13 @@ namespace Fly.Managers
             this.screenHeight = screenHeight;
             for (int i = 0; i < starCount; i++)
             {
-                stars.Add(new Sprite(texture, frameRectangle, new Vector2(random.Next(0, screenWidth), random.Next(0, screenHeight)),
-                    new Vector2(starVelocity.X, random.Next((int)starVelocity.Y - 20, (int)starVelocity.Y))));
+                stars.Add(new Star(
+                    texture,
+                    frameRectangle,
+                    new Vector2(random.Next(0, screenWidth), random.Next(0, screenHeight)),
+                    new Vector2(starVelocity.X, random.Next((int)starVelocity.Y - 20, (int)starVelocity.Y)),
+                    1));
+
                 Color starColor = colors[random.Next(0, colors.Count())];
                 starColor *= (float)(random.Next(30, 80) / 100f);
                 stars[stars.Count() - 1].TintColor = starColor;

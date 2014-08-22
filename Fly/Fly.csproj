@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="Classes\CollisionSprite.cs" />
     <Compile Include="Classes\Sprite.cs" />
+    <Compile Include="Classes\Star.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Managers\StarField.cs" />
