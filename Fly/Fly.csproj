@@ -40,6 +40,7 @@
     <Compile Include="Classes\Star.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Managers\AsteroidManager.cs" />
     <Compile Include="Managers\StarField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

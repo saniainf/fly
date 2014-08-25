@@ -13,7 +13,7 @@ namespace Fly.Managers
         private List<Star> stars = new List<Star>();
         private int screenWidth = 800;
         private int screenHeight = 600;
-        private Random random = new Random();
+        private Random rand = new Random();
         private Color[] colors = { Color.White, Color.Yellow, Color.Wheat, Color.WhiteSmoke, Color.SlateGray };
 
         public StarField(int screenWidth, int screenHeight, int starCount, Vector2 starVelocity, Texture2D texture, Rectangle frameRectangle)
@@ -25,12 +25,11 @@ namespace Fly.Managers
                 stars.Add(new Star(
                     texture,
                     frameRectangle,
-                    new Vector2(random.Next(0, screenWidth), random.Next(0, screenHeight)),
-                    new Vector2(starVelocity.X, random.Next((int)starVelocity.Y - 20, (int)starVelocity.Y)),
-                    1));
+                    new Vector2(rand.Next(0, screenWidth), rand.Next(0, screenHeight)),
+                    starVelocity));
 
-                Color starColor = colors[random.Next(0, colors.Count())];
-                starColor *= (float)(random.Next(30, 80) / 100f);
+                Color starColor = colors[rand.Next(0, colors.Count())];
+                starColor *= (float)(rand.Next(30, 80) / 100f);
                 stars[stars.Count() - 1].TintColor = starColor;
             }
         }
@@ -40,8 +39,10 @@ namespace Fly.Managers
             foreach (Sprite star in stars)
             {
                 star.Update(gameTime);
-                if (star.Location.Y > screenHeight)
-                    star.Location = new Vector2(random.Next(0, screenWidth), 0);
+                //if (star.Location.Y > screenHeight)
+                //    star.Location = new Vector2(random.Next(0, screenWidth), 0);
+                if (star.Location.X < 0)
+                    star.Location = new Vector2(screenWidth, rand.Next(0, screenHeight));
             }
         }
 

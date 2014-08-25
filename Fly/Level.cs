@@ -48,7 +48,7 @@ namespace Fly
 
             starField = new StarField(
                 this.Window.ClientBounds.Width, this.Window.ClientBounds.Height,
-                100, new Vector2(0f, 200f), spriteSheet, new Rectangle(0, 0, 2, 2));
+                100, new Vector2(-200f, 0f), spriteSheet, new Rectangle(0, 1020, 2, 2));
 
             base.LoadContent();
         }
