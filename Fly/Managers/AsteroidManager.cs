@@ -93,7 +93,7 @@ namespace Fly.Managers
                 tryCount++;
                 if ((tryCount > 5) && locationOK == false)
                 {
-
+                    location = new
                 }
             } while (locationOK == false);
 
