@@ -15,7 +15,7 @@ namespace Fly.Classes
         protected int frameWidth = 0;
         protected int frameHeight = 0;
         protected int currentFrame;
-        protected float frameTime = 0.1f;
+        protected float frameTime = 0.05f;
         protected float timeForCurrentFrame = 0.0f;
 
         protected Color tintColor = Color.White;

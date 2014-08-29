@@ -23,6 +23,7 @@ namespace Fly
         Texture2D spriteSheet;
 
         StarField starField;
+        AsteroidManager asteroidManager;
 
         public Level()
             : base()
@@ -50,6 +51,11 @@ namespace Fly
                 this.Window.ClientBounds.Width, this.Window.ClientBounds.Height,
                 100, new Vector2(-200f, 0f), spriteSheet, new Rectangle(0, 1020, 2, 2));
 
+            asteroidManager = new AsteroidManager(
+                10, spriteSheet, new Rectangle(0, 0, 50, 50), 20,
+                this.Window.ClientBounds.Width,
+                this.Window.ClientBounds.Height);
+
             base.LoadContent();
         }
 
@@ -67,6 +73,7 @@ namespace Fly
 
                 case GameStates.Playing:
                     starField.Update(gameTime);
+                    asteroidManager.Update(gameTime);
                     break;
 
                 case GameStates.PlayerDead:
@@ -88,6 +95,7 @@ namespace Fly
             if (gameStates == GameStates.Playing)
             {
                 starField.Draw(spriteBatch);
+                asteroidManager.Draw(spriteBatch);
             }
 
             spriteBatch.End();
