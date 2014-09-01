@@ -10,8 +10,8 @@ namespace Fly.Managers
 {
     class AsteroidManager
     {
-        private int screenWidth = 800;
-        private int screenHeight = 600;
+        private int screenWidth = 1024;
+        private int screenHeight = 768;
         private int screenPadding = 10;
 
         private Rectangle initialFrame;
@@ -19,7 +19,7 @@ namespace Fly.Managers
         private Texture2D texture;
 
         public List<CollisionSprite> Asteroids = new List<CollisionSprite>();
-        private int minSpeed = 60;
+        private int minSpeed = 30;
         private int maxSpeed = 120;
 
         private Random rand = new Random();

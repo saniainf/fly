@@ -21,9 +21,11 @@ namespace Fly
         enum GameStates { TitleScreen, Playing, PlayerDead, GameOver };
         GameStates gameStates = GameStates.Playing;
         Texture2D spriteSheet;
+        Texture2D spriteRobots;
 
         StarField starField;
         AsteroidManager asteroidManager;
+        TestSpriteManger testSprite;
 
         public Level()
             : base()
@@ -46,6 +48,7 @@ namespace Fly
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
+            spriteRobots = Content.Load<Texture2D>(@"Textures\spriteRobots");
 
             starField = new StarField(
                 this.Window.ClientBounds.Width, this.Window.ClientBounds.Height,
@@ -55,6 +58,8 @@ namespace Fly
                 10, spriteSheet, new Rectangle(0, 0, 50, 50), 20,
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height);
+
+            testSprite = new TestSpriteManger(spriteRobots, new Rectangle(7, 0, 52, 100), 9);
 
             base.LoadContent();
         }
@@ -74,6 +79,7 @@ namespace Fly
                 case GameStates.Playing:
                     starField.Update(gameTime);
                     asteroidManager.Update(gameTime);
+                    testSprite.Update(gameTime);
                     break;
 
                 case GameStates.PlayerDead:
@@ -96,6 +102,7 @@ namespace Fly
             {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
+                testSprite.Draw(spriteBatch);
             }
 
             spriteBatch.End();
