@@ -48,7 +48,7 @@ namespace Fly
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
-            spriteRobots = Content.Load<Texture2D>(@"Textures\spriteRobots");
+            spriteRobots = Content.Load<Texture2D>(@"Textures\spaceShip");
 
             starField = new StarField(
                 this.Window.ClientBounds.Width, this.Window.ClientBounds.Height,
@@ -59,7 +59,7 @@ namespace Fly
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height);
 
-            testSprite = new TestSpriteManger(spriteRobots, new Rectangle(7, 0, 52, 100), 9);
+            testSprite = new TestSpriteManger(spriteRobots, new Rectangle(0, 0, 141, 62), 3);
 
             base.LoadContent();
         }
