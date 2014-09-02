@@ -41,6 +41,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Managers\AsteroidManager.cs" />
+    <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\ShotManager.cs" />
     <Compile Include="Managers\StarField.cs" />
     <Compile Include="Managers\TestSpriteManger.cs" />
@@ -55,10 +56,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Textures\asteroid.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Textures\bullet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\deform.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\interface.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\level.png">
@@ -71,9 +78,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\spaceShip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\spriteRobots.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\spriteSheet.png">

@@ -21,10 +21,17 @@ namespace Fly
         enum GameStates { TitleScreen, Playing, PlayerDead, GameOver };
         GameStates gameStates = GameStates.Playing;
         Texture2D spriteSheet;
+        Texture2D spaceShip;
+        Texture2D interfaceScreen;
+
+        //test
         Texture2D spriteRobots;
 
         StarField starField;
         AsteroidManager asteroidManager;
+        PlayerManager playerManager;
+
+        //test
         TestSpriteManger testSprite;
 
         public Level()
@@ -48,18 +55,29 @@ namespace Fly
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             spriteSheet = Content.Load<Texture2D>(@"Textures\spriteSheet");
-            spriteRobots = Content.Load<Texture2D>(@"Textures\spaceShip");
+            spaceShip = Content.Load<Texture2D>(@"Textures\spaceShip");
+            interfaceScreen = Content.Load<Texture2D>(@"Textures\interface");
+
+            //test
+            spriteRobots = Content.Load<Texture2D>(@"Textures\asteroid");
 
             starField = new StarField(
                 this.Window.ClientBounds.Width, this.Window.ClientBounds.Height,
-                100, new Vector2(-200f, 0f), spriteSheet, new Rectangle(0, 1020, 2, 2));
+                100, new Vector2(-120f, 0f), spriteSheet, new Rectangle(0, 1020, 2, 2));
 
             asteroidManager = new AsteroidManager(
                 10, spriteSheet, new Rectangle(0, 0, 50, 50), 20,
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height);
 
-            testSprite = new TestSpriteManger(spriteRobots, new Rectangle(0, 0, 141, 62), 3);
+            playerManager = new PlayerManager(spriteSheet, spaceShip, new Rectangle(0, 0, 141, 62), 3,
+                new Rectangle(0, 0,
+                this.Window.ClientBounds.Width,
+                this.Window.ClientBounds.Height));
+
+
+            // test
+            testSprite = new TestSpriteManger(spriteRobots, new Rectangle(0, 0, 141, 62), 1);
 
             base.LoadContent();
         }
@@ -79,6 +97,9 @@ namespace Fly
                 case GameStates.Playing:
                     starField.Update(gameTime);
                     asteroidManager.Update(gameTime);
+                    playerManager.Update(gameTime);
+
+                    //test
                     testSprite.Update(gameTime);
                     break;
 
@@ -95,13 +116,17 @@ namespace Fly
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            
+
             spriteBatch.Begin();
 
             if (gameStates == GameStates.Playing)
             {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
+                playerManager.Draw(spriteBatch);
+
+                spriteBatch.Draw(interfaceScreen, new Vector2(0, 0), Color.White);
+                //test
                 testSprite.Draw(spriteBatch);
             }
 

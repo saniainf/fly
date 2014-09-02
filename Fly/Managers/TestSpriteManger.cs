@@ -25,7 +25,7 @@ namespace Fly.Managers
                     initialFrame.Y,
                     initialFrame.Width,
                     initialFrame.Height));
-            sprite.FrameTime = 0.15f;
+            //sprite.FrameTime = 0.05f;
 
             TestSprite = sprite;
         }
@@ -37,7 +37,7 @@ namespace Fly.Managers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-                TestSprite.Draw(spriteBatch);
+            TestSprite.Draw(spriteBatch);
         }
     }
 }
