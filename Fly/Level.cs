@@ -30,6 +30,7 @@ namespace Fly
         StarField starField;
         AsteroidManager asteroidManager;
         PlayerManager playerManager;
+        EnemyManager enemyManager;
 
         //test
         TestSpriteManger testSprite;
@@ -75,6 +76,11 @@ namespace Fly
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height));
 
+            enemyManager = new EnemyManager(spriteSheet, new Rectangle(0, 200, 50, 50), 6, playerManager,
+                new Rectangle(0, 0,
+                this.Window.ClientBounds.Width,
+                this.Window.ClientBounds.Height));
+
 
             // test
             testSprite = new TestSpriteManger(spriteRobots, new Rectangle(0, 0, 141, 62), 1);
@@ -98,6 +104,7 @@ namespace Fly
                     starField.Update(gameTime);
                     asteroidManager.Update(gameTime);
                     playerManager.Update(gameTime);
+                    enemyManager.Update(gameTime);
 
                     //test
                     testSprite.Update(gameTime);
@@ -124,6 +131,7 @@ namespace Fly
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
                 playerManager.Draw(spriteBatch);
+                enemyManager.Draw(spriteBatch);
 
                 spriteBatch.Draw(interfaceScreen, new Vector2(0, 0), Color.White);
                 //test
