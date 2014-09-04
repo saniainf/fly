@@ -69,7 +69,9 @@ namespace Fly.Classes
                 heading *= speed;
                 EnemySprite.Velocity = heading;
                 previousLocation = EnemySprite.Location;
+
                 EnemySprite.Update(gameTime);
+
                 EnemySprite.Rotation = (float)Math.Atan2(EnemySprite.Location.Y - previousLocation.Y,
                                                          EnemySprite.Location.X - previousLocation.X);
                 

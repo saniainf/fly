@@ -47,6 +47,7 @@
     <Compile Include="Managers\ShotManager.cs" />
     <Compile Include="Managers\StarField.cs" />
     <Compile Include="Managers\TestSpriteManger.cs" />
+    <Compile Include="Other\enemyTmp.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -117,7 +117,9 @@ namespace Fly.Managers
                 }
                 shipSpawnTimer = 0f;
             }
+
             nextWaveTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             if (nextWaveTimer > nextWaveMinTimer)
             {
                 SpawnWave(rand.Next(0, pathWaypoints.Count));
