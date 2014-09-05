@@ -18,11 +18,12 @@ namespace Fly.Managers
 
         public ShotManager EnemyShotManager;
         private PlayerManager playerManager;
+        private Rectangle screenBound;
 
         public int MinShipsPerWave = 5;
         public int MaxShipsPerWave = 8;
         private float nextWaveTimer = 0.0f;
-        private float nextWaveMinTimer = 8.0f;
+        private float nextWaveMinTimer = 5.0f;
         private float shipSpawnTimer = 0.0f;
         private float shipSpawnWaitTime = 0.5f;
 
@@ -39,41 +40,30 @@ namespace Fly.Managers
         private void setUpWaypoints()
         {
             List<Vector2> path0 = new List<Vector2>();
-            path0.Add(new Vector2(850, 300));
-            path0.Add(new Vector2(-100, 300));
+            path0.Add(new Vector2(4f, 0.25f));
+            path0.Add(new Vector2(2f, 1.277f));
+            path0.Add(new Vector2(1f, 2f));
+            path0.Add(new Vector2(0.323f, 1.677f));
+            path0.Add(new Vector2(0f, 1f));
+            path0.Add(new Vector2(0.323f, 0.323f));
+            path0.Add(new Vector2(1f, 0f));
+            path0.Add(new Vector2(2f, 0.802f));
+            path0.Add(new Vector2(4f, 1.75f));
             pathWaypoints.Add(path0);
             waveSpawns[0] = 0;
 
             List<Vector2> path1 = new List<Vector2>();
-            path1.Add(new Vector2(-50, 225));
-            path1.Add(new Vector2(850, 225));
+            path1.Add(new Vector2(4f, 0.5f));
+            path1.Add(new Vector2(3.5f, 1.5f));
+            path1.Add(new Vector2(3.0f, 0.5f));
+            path1.Add(new Vector2(2.5f, 1.5f));
+            path1.Add(new Vector2(2.0f, 0.5f));
+            path1.Add(new Vector2(1.5f, 1.5f));
+            path1.Add(new Vector2(1f, 0.5f));
+            path1.Add(new Vector2(0.5f, 1.5f));
+            path1.Add(new Vector2(0f, 0.5f));
             pathWaypoints.Add(path1);
             waveSpawns[1] = 0;
-
-            List<Vector2> path2 = new List<Vector2>();
-            path2.Add(new Vector2(-100, 50));
-            path2.Add(new Vector2(150, 50));
-            path2.Add(new Vector2(200, 75));
-            path2.Add(new Vector2(200, 125));
-            path2.Add(new Vector2(150, 150));
-            path2.Add(new Vector2(150, 175));
-            path2.Add(new Vector2(200, 200));
-            path2.Add(new Vector2(600, 200));
-            path2.Add(new Vector2(850, 600));
-            pathWaypoints.Add(path2);
-            waveSpawns[2] = 0;
-
-            List<Vector2> path3 = new List<Vector2>();
-            path3.Add(new Vector2(600, -100));
-            path3.Add(new Vector2(600, 250));
-            path3.Add(new Vector2(580, 275));
-            path3.Add(new Vector2(500, 250));
-            path3.Add(new Vector2(500, 200));
-            path3.Add(new Vector2(450, 175));
-            path3.Add(new Vector2(400, 150));
-            path3.Add(new Vector2(-100, 150));
-            pathWaypoints.Add(path3);
-            waveSpawns[3] = 0;
         }
 
         public EnemyManager(Texture2D texture, Rectangle initialFrame, int frameCount, PlayerManager playerManager, Rectangle screenBound)
@@ -82,17 +72,24 @@ namespace Fly.Managers
             this.initialFrame = initialFrame;
             this.frameCount = frameCount;
             this.playerManager = playerManager;
+            this.screenBound = screenBound;
 
-            EnemyShotManager = new ShotManager(texture, new Rectangle(0,300,5,5), 4, 2, 150f, screenBound);
-            
+            EnemyShotManager = new ShotManager(texture, new Rectangle(0, 300, 5, 5), 4, 2, 150f, screenBound);
+
             setUpWaypoints();
         }
 
         public void SpawnEnemy(int path)
         {
-            Enemy thisEnemy = new Enemy(texture, pathWaypoints[path][0], initialFrame, frameCount);
-            for (int i = 0; i < pathWaypoints[path].Count(); i++)
-                thisEnemy.AddWaypoint(pathWaypoints[path][i]);
+            Enemy thisEnemy = new Enemy(
+                texture,
+                pathWaypoints[path][0],
+                initialFrame,
+                frameCount,
+                new Rectangle(40, 40, screenBound.Width - 80, screenBound.Height - 80),
+                new Vector2(4f,2f));
+            thisEnemy.AddWaypoint(pathWaypoints[path]);
+
             Enemies.Add(thisEnemy);
         }
 

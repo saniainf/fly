@@ -11,14 +11,20 @@ namespace Fly.Classes
     {
         public CollisionSprite EnemySprite;
         public Vector2 gunOffset = new Vector2(25, 25);
-        private Queue<Vector2> waypoints = new Queue<Vector2>();
-        private Vector2 currentWaypoint = Vector2.Zero;
-        private float speed = 120f;
+        private float speed = 0.05f;
         public bool Destroyed = false;
         private int enemyRadius = 15;
+        private Rectangle fieldBound;
+        private Vector2 dimension;
+
+        private Curve xCurve = new Curve();
+        private Curve yCurve = new Curve();
+        private float time;
+
+        private Vector2 currentWaypoint = Vector2.Zero;
         private Vector2 previousLocation = Vector2.Zero;
 
-        public Enemy(Texture2D texture, Vector2 location, Rectangle initialFrame, int frameCount)
+        public Enemy(Texture2D texture, Vector2 location, Rectangle initialFrame, int frameCount, Rectangle fieldBound, Vector2 dimension)
         {
             EnemySprite = new CollisionSprite(texture, initialFrame, location, Vector2.Zero);
 
@@ -28,28 +34,39 @@ namespace Fly.Classes
                     initialFrame.Y,
                     initialFrame.Width,
                     initialFrame.Height));
+
             previousLocation = location;
             currentWaypoint = location;
             EnemySprite.CollisionRadius = enemyRadius;
+            this.fieldBound = fieldBound;
+            this.dimension = dimension;
         }
 
-        public void AddWaypoint(Vector2 waypoint)
+        public void AddWaypoint(List<Vector2> waypoint)
         {
-            waypoints.Enqueue(waypoint);
+            for (int i = 0; i < waypoint.Count; i++)
+            {
+                float t = (float)(1.0f / (float)waypoint.Count) * (float)i;
+                xCurve.Keys.Add(new CurveKey(t, waypoint[i].X));
+                yCurve.Keys.Add(new CurveKey(t, waypoint[i].Y));
+            }
+            xCurve.ComputeTangents(CurveTangent.Smooth);
+            yCurve.ComputeTangents(CurveTangent.Smooth);
         }
 
         public bool WaypointReached()
         {
-            return (Vector2.Distance(EnemySprite.Location, currentWaypoint) < (float)EnemySprite.Source.Width / 2);
+            Vector2 endPoint = new Vector2(
+                (fieldBound.Width / dimension.X) * xCurve.Evaluate(1f),
+                (fieldBound.Height / dimension.Y) * yCurve.Evaluate(1f));
+
+            return (Vector2.Distance(EnemySprite.Location, endPoint) < (float)EnemySprite.Source.Width / 2);
         }
 
         public bool IsActive()
         {
             if (Destroyed)
                 return false;
-
-            if (waypoints.Count > 0)
-                return true;
 
             if (WaypointReached())
                 return false;
@@ -61,22 +78,24 @@ namespace Fly.Classes
         {
             if (IsActive())
             {
-                Vector2 heading = currentWaypoint - EnemySprite.Location;
-                
-                if (heading != Vector2.Zero)
-                    heading.Normalize();
+                //Vector2 heading = currentWaypoint - EnemySprite.Location;
 
-                heading *= speed;
-                EnemySprite.Velocity = heading;
-                previousLocation = EnemySprite.Location;
+                //if (heading != Vector2.Zero)
+                //    heading.Normalize();
 
-                EnemySprite.Update(gameTime);
+                //heading *= speed;
+                //EnemySprite.Velocity = heading;
+                //previousLocation = EnemySprite.Location;
 
-                EnemySprite.Rotation = (float)Math.Atan2(EnemySprite.Location.Y - previousLocation.Y,
-                                                         EnemySprite.Location.X - previousLocation.X);
-                
-                if (WaypointReached() && waypoints.Count > 0)
-                    currentWaypoint = waypoints.Dequeue();
+                //EnemySprite.Update(gameTime);
+
+                //EnemySprite.Rotation = (float)Math.Atan2(EnemySprite.Location.Y - previousLocation.Y,
+                //                                         EnemySprite.Location.X - previousLocation.X);
+
+                time = (speed * (float)gameTime.ElapsedGameTime.TotalSeconds + time) % 1;
+                float x = (fieldBound.Width / 4) * xCurve.Evaluate(time) + fieldBound.X;
+                float y = (fieldBound.Height / 2) * yCurve.Evaluate(time) + fieldBound.Y;
+                EnemySprite.Location = new Vector2(x, y);
             }
         }
 
