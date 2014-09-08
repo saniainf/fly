@@ -11,7 +11,7 @@ namespace Fly.Classes
     {
         public CollisionSprite EnemySprite;
         public Vector2 gunOffset = new Vector2(25, 25);
-        private float speed = 0.05f;
+        private float speed = 0.1f;
         public bool Destroyed = false;
         private int enemyRadius = 15;
         private Rectangle fieldBound;
@@ -19,6 +19,7 @@ namespace Fly.Classes
 
         private Curve xCurve = new Curve();
         private Curve yCurve = new Curve();
+        private Vector2 endPoint;
         private float time;
 
         private Vector2 currentWaypoint = Vector2.Zero;
@@ -49,6 +50,9 @@ namespace Fly.Classes
                 float t = (float)(1.0f / (float)waypoint.Count) * (float)i;
                 xCurve.Keys.Add(new CurveKey(t, waypoint[i].X));
                 yCurve.Keys.Add(new CurveKey(t, waypoint[i].Y));
+
+                if (i == waypoint.Count - 1)
+                    endPoint = waypoint[i];
             }
             xCurve.ComputeTangents(CurveTangent.Smooth);
             yCurve.ComputeTangents(CurveTangent.Smooth);
@@ -56,9 +60,9 @@ namespace Fly.Classes
 
         public bool WaypointReached()
         {
-            Vector2 endPoint = new Vector2(
-                (fieldBound.Width / dimension.X) * xCurve.Evaluate(1f),
-                (fieldBound.Height / dimension.Y) * yCurve.Evaluate(1f));
+            endPoint = new Vector2(
+                (fieldBound.Width / dimension.X) * endPoint.X,
+                (fieldBound.Height / dimension.Y) * endPoint.Y;
 
             return (Vector2.Distance(EnemySprite.Location, endPoint) < (float)EnemySprite.Source.Width / 2);
         }
@@ -87,7 +91,7 @@ namespace Fly.Classes
                 //EnemySprite.Velocity = heading;
                 //previousLocation = EnemySprite.Location;
 
-                //EnemySprite.Update(gameTime);
+                EnemySprite.Update(gameTime);
 
                 //EnemySprite.Rotation = (float)Math.Atan2(EnemySprite.Location.Y - previousLocation.Y,
                 //                                         EnemySprite.Location.X - previousLocation.X);

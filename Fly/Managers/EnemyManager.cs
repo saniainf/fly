@@ -21,7 +21,7 @@ namespace Fly.Managers
         private Rectangle screenBound;
 
         public int MinShipsPerWave = 5;
-        public int MaxShipsPerWave = 8;
+        public int MaxShipsPerWave = 5;
         private float nextWaveTimer = 0.0f;
         private float nextWaveMinTimer = 5.0f;
         private float shipSpawnTimer = 0.0f;
@@ -40,30 +40,10 @@ namespace Fly.Managers
         private void setUpWaypoints()
         {
             List<Vector2> path0 = new List<Vector2>();
-            path0.Add(new Vector2(4f, 0.25f));
-            path0.Add(new Vector2(2f, 1.277f));
-            path0.Add(new Vector2(1f, 2f));
-            path0.Add(new Vector2(0.323f, 1.677f));
+            path0.Add(new Vector2(4f, 1f));
             path0.Add(new Vector2(0f, 1f));
-            path0.Add(new Vector2(0.323f, 0.323f));
-            path0.Add(new Vector2(1f, 0f));
-            path0.Add(new Vector2(2f, 0.802f));
-            path0.Add(new Vector2(4f, 1.75f));
             pathWaypoints.Add(path0);
             waveSpawns[0] = 0;
-
-            List<Vector2> path1 = new List<Vector2>();
-            path1.Add(new Vector2(4f, 0.5f));
-            path1.Add(new Vector2(3.5f, 1.5f));
-            path1.Add(new Vector2(3.0f, 0.5f));
-            path1.Add(new Vector2(2.5f, 1.5f));
-            path1.Add(new Vector2(2.0f, 0.5f));
-            path1.Add(new Vector2(1.5f, 1.5f));
-            path1.Add(new Vector2(1f, 0.5f));
-            path1.Add(new Vector2(0.5f, 1.5f));
-            path1.Add(new Vector2(0f, 0.5f));
-            pathWaypoints.Add(path1);
-            waveSpawns[1] = 0;
         }
 
         public EnemyManager(Texture2D texture, Rectangle initialFrame, int frameCount, PlayerManager playerManager, Rectangle screenBound)
@@ -86,8 +66,8 @@ namespace Fly.Managers
                 pathWaypoints[path][0],
                 initialFrame,
                 frameCount,
-                new Rectangle(40, 40, screenBound.Width - 80, screenBound.Height - 80),
-                new Vector2(4f,2f));
+                new Rectangle(80, 80, screenBound.Width - 160, screenBound.Height - 160),
+                new Vector2(4f, 2f));
             thisEnemy.AddWaypoint(pathWaypoints[path]);
 
             Enemies.Add(thisEnemy);
@@ -124,6 +104,20 @@ namespace Fly.Managers
             }
         }
 
+        private void enemyShot(int i)
+        {
+            if ((float)rand.Next(0, 1000) / 2 <= shipShotChance)
+            {
+                Vector2 fireLoc = Enemies[i].EnemySprite.Location;
+                fireLoc += Enemies[i].gunOffset;
+
+                Vector2 shotDirection = playerManager.playerSprite.Center - fireLoc;
+                shotDirection.Normalize();
+
+                EnemyShotManager.FireShot(fireLoc, shotDirection, false);
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             EnemyShotManager.Update(gameTime);
@@ -135,20 +129,8 @@ namespace Fly.Managers
                 if (!Enemies[i].IsActive())
                     Enemies.RemoveAt(i);
                 else
-                {
-                    if ((float)rand.Next(0, 1000) / 2 <= shipShotChance)
-                    {
-                        Vector2 fireLoc = Enemies[i].EnemySprite.Location;
-                        fireLoc += Enemies[i].gunOffset;
-
-                        Vector2 shotDirection = playerManager.playerSprite.Center - fireLoc;
-                        shotDirection.Normalize();
-
-                        EnemyShotManager.FireShot(fireLoc, shotDirection, false);
-                    }
-                }
+                    enemyShot(i);
             }
-
             if (Active)
                 updateWaveSpawn(gameTime);
         }
