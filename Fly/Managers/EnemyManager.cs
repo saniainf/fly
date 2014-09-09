@@ -19,22 +19,22 @@ namespace Fly.Managers
         public ShotManager EnemyShotManager;
         private PlayerManager playerManager;
         private Rectangle screenBound;
+        private Rectangle fieldBound;
 
         public int MinShipsPerWave = 3;
         public int MaxShipsPerWave = 6;
         private float nextWaveTime = 0.0f;
-        private float nextWaveMinTimer = 4f;
+        private float nextWaveMinTimer = 3f;
         private float nextShipMinTime = 0.2f;
         private float nextShipTimer = 0.0f;
 
         private float shipShotChance = 0.2f;
 
-        private List<List<Vector2>> pathWaypoints = new List<List<Vector2>>();
-
         public bool Active = true;
 
         private Random rand = new Random();
 
+        private List<List<Vector2>> pathWaypoints = new List<List<Vector2>>();
         private void setUpWaypoints()
         {
             List<Vector2> path0 = new List<Vector2>();
@@ -42,6 +42,12 @@ namespace Fly.Managers
             path0.Add(new Vector2(2f, 0f));
             path0.Add(new Vector2(0f, 1f));
             pathWaypoints.Add(path0);
+
+            List<Vector2> path1 = new List<Vector2>();
+            path1.Add(new Vector2(4f, 1f));
+            path1.Add(new Vector2(2f, 2f));
+            path1.Add(new Vector2(0f, 1f));
+            pathWaypoints.Add(path1);
         }
 
         public EnemyManager(Texture2D texture, Rectangle initialFrame, int frameCount, PlayerManager playerManager, Rectangle screenBound)
@@ -51,6 +57,7 @@ namespace Fly.Managers
             this.frameCount = frameCount;
             this.playerManager = playerManager;
             this.screenBound = screenBound;
+            fieldBound = new Rectangle(-60, 5, screenBound.Width + 120, screenBound.Height - 62 - initialFrame.Height);
 
             EnemyShotManager = new ShotManager(texture, new Rectangle(0, 300, 5, 5), 4, 2, 150f, screenBound);
 
@@ -64,7 +71,7 @@ namespace Fly.Managers
                 new Vector2(-500f, -500f),
                 initialFrame,
                 frameCount,
-                new Rectangle(80, 80, screenBound.Width - 160, screenBound.Height - 160),
+                fieldBound,
                 new Vector2(4f, 2f));
             thisEnemy.spawnTimer = spawnTimer;
             thisEnemy.AddWaypoint(pathWaypoints[path]);
@@ -74,10 +81,10 @@ namespace Fly.Managers
 
         public void SpawnWave(int waveType)
         {
-            int countEnemy = 5;
+            int enemyCount = rand.Next(MinShipsPerWave, MaxShipsPerWave);
             nextShipTimer = 0f;
             
-            for (int i = 0; i <= countEnemy; i++)
+            for (int i = 0; i <= enemyCount; i++)
             {
                 SpawnEnemy(waveType, nextShipTimer);
                 nextShipTimer += nextShipMinTime;
