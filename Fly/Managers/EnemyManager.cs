@@ -20,18 +20,16 @@ namespace Fly.Managers
         private PlayerManager playerManager;
         private Rectangle screenBound;
 
-        public int MinShipsPerWave = 5;
-        public int MaxShipsPerWave = 5;
-        private float nextWaveTimer = 0.0f;
-        private float nextWaveMinTimer = 5.0f;
-        private float shipSpawnTimer = 0.0f;
-        private float shipSpawnWaitTime = 0.5f;
+        public int MinShipsPerWave = 3;
+        public int MaxShipsPerWave = 6;
+        private float nextWaveTime = 0.0f;
+        private float nextWaveMinTimer = 4f;
+        private float nextShipMinTime = 0.2f;
+        private float nextShipTimer = 0.0f;
 
         private float shipShotChance = 0.2f;
 
         private List<List<Vector2>> pathWaypoints = new List<List<Vector2>>();
-
-        private Dictionary<int, int> waveSpawns = new Dictionary<int, int>();
 
         public bool Active = true;
 
@@ -41,9 +39,9 @@ namespace Fly.Managers
         {
             List<Vector2> path0 = new List<Vector2>();
             path0.Add(new Vector2(4f, 1f));
+            path0.Add(new Vector2(2f, 0f));
             path0.Add(new Vector2(0f, 1f));
             pathWaypoints.Add(path0);
-            waveSpawns[0] = 0;
         }
 
         public EnemyManager(Texture2D texture, Rectangle initialFrame, int frameCount, PlayerManager playerManager, Rectangle screenBound)
@@ -59,15 +57,16 @@ namespace Fly.Managers
             setUpWaypoints();
         }
 
-        public void SpawnEnemy(int path)
+        public void SpawnEnemy(int path, float spawnTimer)
         {
             Enemy thisEnemy = new Enemy(
                 texture,
-                pathWaypoints[path][0],
+                new Vector2(-500f, -500f),
                 initialFrame,
                 frameCount,
                 new Rectangle(80, 80, screenBound.Width - 160, screenBound.Height - 160),
                 new Vector2(4f, 2f));
+            thisEnemy.spawnTimer = spawnTimer;
             thisEnemy.AddWaypoint(pathWaypoints[path]);
 
             Enemies.Add(thisEnemy);
@@ -75,32 +74,25 @@ namespace Fly.Managers
 
         public void SpawnWave(int waveType)
         {
-            waveSpawns[waveType] += rand.Next(MinShipsPerWave, MaxShipsPerWave + 1);
+            int countEnemy = 5;
+            nextShipTimer = 0f;
+            
+            for (int i = 0; i <= countEnemy; i++)
+            {
+                SpawnEnemy(waveType, nextShipTimer);
+                nextShipTimer += nextShipMinTime;
+            }
         }
 
         private void updateWaveSpawn(GameTime gameTime)
         {
-            shipSpawnTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            nextWaveTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (shipSpawnTimer > shipSpawnWaitTime)
-            {
-                for (int i = waveSpawns.Count - 1; i >= 0; i--)
-                {
-                    if (waveSpawns[i] > 0)
-                    {
-                        waveSpawns[i]--;
-                        SpawnEnemy(i);
-                    }
-                }
-                shipSpawnTimer = 0f;
-            }
-
-            nextWaveTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (nextWaveTimer > nextWaveMinTimer)
+            if (nextWaveTime > nextWaveMinTimer)
             {
                 SpawnWave(rand.Next(0, pathWaypoints.Count));
-                nextWaveTimer = 0f;
+
+                nextWaveTime = 0f;
             }
         }
 
@@ -138,7 +130,10 @@ namespace Fly.Managers
         public void Draw(SpriteBatch spriteBath)
         {
             foreach (Enemy enemy in Enemies)
-                enemy.Draw(spriteBath);
+            {
+                if (enemy.IsActive())
+                    enemy.Draw(spriteBath);
+            }
         }
     }
 }

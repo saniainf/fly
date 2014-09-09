@@ -86,9 +86,6 @@ namespace Fly.Managers
             if (location.Y > playerAreaLimit.Bottom - playerSprite.Source.Height)
                 location.Y = playerAreaLimit.Bottom - playerSprite.Source.Height;
 
-            location.X = (int)location.X;
-            location.Y = (int)location.Y;
-
             playerSprite.Location = location;
         }
 

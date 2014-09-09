@@ -107,7 +107,10 @@ namespace Fly.Classes
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Center, Source, tintColor, rotation, new Vector2(frameWidth / 2, frameHeight / 2), 1.0f, SpriteEffects.None, 0.0f);
+            Vector2 centerInt;
+            centerInt.X = (int)Center.X;
+            centerInt.Y = (int)Center.Y;
+            spriteBatch.Draw(Texture, centerInt, Source, tintColor, rotation, new Vector2(frameWidth / 2, frameHeight / 2), 1.0f, SpriteEffects.None, 0.0f);
         }
     }
 }
