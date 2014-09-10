@@ -11,7 +11,7 @@ namespace Fly.Classes
     {
         public CollisionSprite EnemySprite;
         public Vector2 gunOffset = new Vector2(25, 25);
-        private float speed = 0.2f;
+        private float speed = 0.1f;
         public bool Destroyed = false;
         private int enemyRadius = 15;
         private Rectangle fieldBound;

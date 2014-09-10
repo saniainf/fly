@@ -38,6 +38,7 @@ namespace Fly.Managers
             }
 
             newAsteroid.Rotation = MathHelper.ToRadians((float)rand.Next(0, 360));
+            //newAsteroid.Rotation = 0f;
             newAsteroid.CollisionRadius = 15;
             Asteroids.Add(newAsteroid);
         }
@@ -113,10 +114,6 @@ namespace Fly.Managers
 
         private bool isOnScreen(CollisionSprite asteroid)
         {
-            //if (asteroid.Destination.Intersects(new Rectangle(-screenPadding, -screenPadding, screenWidth + screenPadding, screenHeight + screenPadding)))
-            //    return true;
-            //else
-            //    return false;
             return (asteroid.Destination.Intersects(new Rectangle(-screenPadding, -screenPadding, screenWidth + screenPadding, screenHeight + screenPadding)));
         }
 

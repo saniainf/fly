@@ -67,7 +67,7 @@ namespace Fly
                 100, new Vector2(-120f, 0f), spriteSheet, new Rectangle(0, 1020, 2, 2));
 
             asteroidManager = new AsteroidManager(
-                10, spriteSheet, new Rectangle(0, 0, 50, 50), 20,
+                10, spriteSheet, new Rectangle(0, 550, 50, 50), 1,
                 this.Window.ClientBounds.Width,
                 this.Window.ClientBounds.Height);
 
@@ -124,7 +124,7 @@ namespace Fly
         {
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null, null);
 
             if (gameStates == GameStates.Playing)
             {
