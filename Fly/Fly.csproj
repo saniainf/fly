@@ -37,12 +37,14 @@
   <ItemGroup>
     <Compile Include="Classes\CollisionSprite.cs" />
     <Compile Include="Classes\Enemy.cs" />
+    <Compile Include="Classes\Particle.cs" />
     <Compile Include="Classes\Sprite.cs" />
     <Compile Include="Classes\Star.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Managers\AsteroidManager.cs" />
     <Compile Include="Managers\EnemyManager.cs" />
+    <Compile Include="Managers\ExplosionManager.cs" />
     <Compile Include="Managers\PlayerManager.cs" />
     <Compile Include="Managers\ShotManager.cs" />
     <Compile Include="Managers\StarField.cs" />

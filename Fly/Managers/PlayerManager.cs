@@ -30,7 +30,7 @@ namespace Fly.Managers
         public PlayerManager(Texture2D texture, Texture2D textureShip, Rectangle initialFrame, int frameCount, Rectangle screenBound)
         {
             playerSprite = new CollisionSprite(textureShip, initialFrame, new Vector2(500, 500), Vector2.Zero);
-            PlayerShotManager = new ShotManager(texture, new Rectangle(0, 300, 5, 5), 4, 2, playerShotSpeed, screenBound);
+            PlayerShotManager = new ShotManager(texture, new Rectangle(0, 300, 9, 9), 4, 9, playerShotSpeed, screenBound);
             playerAreaLimit = new Rectangle(0, 0, screenBound.Width / 2, screenBound.Height);
 
             for (int i = 1; i < frameCount; i++)

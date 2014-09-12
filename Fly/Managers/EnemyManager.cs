@@ -59,7 +59,7 @@ namespace Fly.Managers
             this.screenBound = screenBound;
             fieldBound = new Rectangle(-60, 5, screenBound.Width + 120, screenBound.Height - 62 - initialFrame.Height);
 
-            EnemyShotManager = new ShotManager(texture, new Rectangle(0, 300, 5, 5), 4, 2, 150f, screenBound);
+            EnemyShotManager = new ShotManager(texture, new Rectangle(0, 300, 9, 9), 4, 9, 150f, screenBound);
 
             setUpWaypoints();
         }
@@ -136,6 +136,8 @@ namespace Fly.Managers
 
         public void Draw(SpriteBatch spriteBath)
         {
+            EnemyShotManager.Draw(spriteBath);
+
             foreach (Enemy enemy in Enemies)
             {
                 if (enemy.IsActive())

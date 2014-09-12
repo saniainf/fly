@@ -135,7 +135,7 @@ namespace Fly
 
                 spriteBatch.Draw(interfaceScreen, new Vector2(0, 0), Color.White);
                 //test
-                testSprite.Draw(spriteBatch);
+                //testSprite.Draw(spriteBatch);
             }
 
             spriteBatch.End();

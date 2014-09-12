@@ -10,6 +10,8 @@ namespace CarOnInfinityCourse
     /// </summary>
     public class Game1 : Game
     {
+	//float H = w*sinA + h*cosA;
+	//float W = w*cosA + h*sinA;
         const float SPEED = 0.2f;           // laps per second
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
