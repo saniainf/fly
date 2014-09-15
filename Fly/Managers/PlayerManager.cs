@@ -20,7 +20,7 @@ namespace Fly.Managers
         public int LivesRemaining = 3;
         public bool Destroyed = false;
 
-        private Vector2 gunOffest = new Vector2(141, 55);
+        private Vector2 gunOffest = new Vector2(141, 53);
         private float shotTimer = 0.0f;
         private float minShotTimer = 0.2f;
         private int playerRadius = 15;

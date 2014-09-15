@@ -39,13 +39,13 @@ namespace Fly.Managers
         {
             List<Vector2> path0 = new List<Vector2>();
             path0.Add(new Vector2(4f, 1f));
-            path0.Add(new Vector2(2f, 0f));
+            path0.Add(new Vector2(2f, 0.5f));
             path0.Add(new Vector2(0f, 1f));
             pathWaypoints.Add(path0);
 
             List<Vector2> path1 = new List<Vector2>();
             path1.Add(new Vector2(4f, 1f));
-            path1.Add(new Vector2(2f, 2f));
+            path1.Add(new Vector2(2f, 1.5f));
             path1.Add(new Vector2(0f, 1f));
             pathWaypoints.Add(path1);
         }
