@@ -32,6 +32,7 @@ namespace Fly
         PlayerManager playerManager;
         EnemyManager enemyManager;
         ExplosionManager explosionManager;
+        CollisionManager collisionManager;
 
         //test
         TestSpriteManger testSprite;
@@ -84,6 +85,8 @@ namespace Fly
 
             explosionManager = new ExplosionManager(spriteSheet, new Rectangle(0, 100, 50, 50), 3, new Rectangle(0, 450, 2, 2));
 
+            collisionManager = new CollisionManager(asteroidManager, playerManager, enemyManager, explosionManager);
+
 
             // test
             testSprite = new TestSpriteManger(spriteRobots, new Rectangle(0, 0, 141, 62), 1);
@@ -109,6 +112,7 @@ namespace Fly
                     playerManager.Update(gameTime);
                     enemyManager.Update(gameTime);
                     explosionManager.Update(gameTime);
+                    collisionManager.CheckCollisions();
 
                     //test
                     testSprite.Update(gameTime);
@@ -134,8 +138,8 @@ namespace Fly
             {
                 starField.Draw(spriteBatch);
                 asteroidManager.Draw(spriteBatch);
-                playerManager.Draw(spriteBatch);
                 enemyManager.Draw(spriteBatch);
+                playerManager.Draw(spriteBatch);
                 explosionManager.Draw(spriteBatch);
 
                 spriteBatch.Draw(interfaceScreen, new Vector2(0, 0), Color.White);

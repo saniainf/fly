@@ -83,7 +83,8 @@ namespace Fly.Managers
                     finalColor));
             }
 
-            int points = rand.Next(minPointCount, maxPointCount + 1); for (int x = 0; x < points; x++)
+            int points = rand.Next(minPointCount, maxPointCount + 1);
+            for (int x = 0; x < points; x++)
             {
                 ExplosionParticles.Add(new Particle(
                     texture,
