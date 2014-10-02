@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="32" height="24" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="mockup" tilewidth="16" tileheight="16">
+  <image source="../mockup.png" width="896" height="208"/>
+ </tileset>
+ <layer name="Слой тайлов 1" width="32" height="24">
+  <data encoding="base64" compression="zlib">
+   eJzt00kOgCAQBdEOzjPOev+LWguNxguw4FfyQtwQOqAzs8Te3P39rCky5ChQokKNBi069BjgMWLCjAUrNuw4cH72D93/HJpf88c0v1Ixp/8/7nT/KmSh398F8a0JRg==
+  </data>
+ </layer>
+</map>

@@ -1,27 +1,39 @@
-﻿#region Using Statements
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
+using Microsoft.Xna.Framework.Media;
 using Tile_Engine;
-#endregion
 
 namespace Gemstone_Hunter
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Game
+    public class Game1 : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
+        SpriteFont pericles8;
+        Vector2 scorePosition = new Vector2(20, 580);
+        enum GameState { TitleScreen, Playing, PlayerDead, GameOver };
+        GameState gameState = GameState.TitleScreen;
+
+        Vector2 gameOverPosition = new Vector2(350, 300);
+        Vector2 livesPosition = new Vector2(600, 580);
+
+        Texture2D titleScreen;
+
+        float deathTimer = 0.0f;
+        float deathDelay = 5.0f;
 
         public Game1()
-            : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -37,6 +49,9 @@ namespace Gemstone_Hunter
         {
             // TODO: Add your initialization logic here
 
+            this.graphics.PreferredBackBufferWidth = 800;
+            this.graphics.PreferredBackBufferHeight = 600;
+            this.graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -46,16 +61,30 @@ namespace Gemstone_Hunter
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             TileMap.Initialize(Content.Load<Texture2D>(@"Textures\PlatformTiles"));
-            TileMap.SetTileAtCell(3, 3, 1, 10);
+            TileMap.spriteFont = Content.Load<SpriteFont>(@"Fonts\HUDFont");
 
-            Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 * 48); 
-            Camera.Position = Vector2.Zero; 
-            Camera.ViewPortWidth = 800; 
+            pericles8 = Content.Load<SpriteFont>(@"Fonts\HUDFont");
+
+            titleScreen = Content.Load<Texture2D>(@"Textures\TitleScreen");
+
+            Camera.WorldRectangle = new Rectangle(0, 0, 160 * 48, 12 * 48);
+            Camera.Position = Vector2.Zero;
+            Camera.ViewPortWidth = 800;
             Camera.ViewPortHeight = 600;
+
+            player = new Player(Content);
+            LevelManager.Initialize(Content, player);
+        }
+
+        private void StartNewGame()
+        {
+            player.Revive();
+            player.LivesRemaining = 3;
+            player.WorldLocation = Vector2.Zero;
+            LevelManager.LoadLevel(0);
         }
 
         /// <summary>
@@ -74,10 +103,66 @@ namespace Gemstone_Hunter
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            // Allows the game to exit
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back ==
+                ButtonState.Pressed)
+                this.Exit();
 
-            // TODO: Add your update logic here
+            KeyboardState keyState = Keyboard.GetState();
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (gameState == GameState.TitleScreen)
+            {
+                if (keyState.IsKeyDown(Keys.Space) ||
+                    gamepadState.Buttons.A == ButtonState.Pressed)
+                {
+                    StartNewGame();
+                    gameState = GameState.Playing;
+                }
+            }
+
+            if (gameState == GameState.Playing)
+            {
+                player.Update(gameTime);
+                LevelManager.Update(gameTime);
+                if (player.Dead)
+                {
+                    if (player.LivesRemaining > 0)
+                    {
+                        gameState = GameState.PlayerDead;
+                        deathTimer = 0.0f;
+                    }
+                    else
+                    {
+                        gameState = GameState.GameOver;
+                        deathTimer = 0.0f;
+                    }
+                }
+            }
+
+            if (gameState == GameState.PlayerDead)
+            {
+                player.Update(gameTime);
+                LevelManager.Update(gameTime);
+                deathTimer += elapsed;
+                if (deathTimer > deathDelay)
+                {
+                    player.WorldLocation = Vector2.Zero;
+                    LevelManager.ReloadLevel();
+                    player.Revive();
+                    gameState = GameState.Playing;
+                }
+            }
+
+            if (gameState == GameState.GameOver)
+            {
+                deathTimer += elapsed;
+                if (deathTimer > deathDelay)
+                {
+                    gameState = GameState.TitleScreen;
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -90,11 +175,51 @@ namespace Gemstone_Hunter
         {
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-            TileMap.Draw(spriteBatch);
+            spriteBatch.Begin(
+                SpriteSortMode.BackToFront,
+                BlendState.AlphaBlend);
+
+            if (gameState == GameState.TitleScreen)
+            {
+                spriteBatch.Draw(titleScreen, Vector2.Zero, Color.White);
+            }
+
+            if ((gameState == GameState.Playing) ||
+                (gameState == GameState.PlayerDead) ||
+                (gameState == GameState.GameOver))
+            {
+                TileMap.Draw(spriteBatch);
+                player.Draw(spriteBatch);
+                LevelManager.Draw(spriteBatch);
+                spriteBatch.DrawString(
+                    pericles8,
+                    "Score: " + player.Score.ToString(),
+                    scorePosition,
+                    Color.White);
+                spriteBatch.DrawString(
+                    pericles8,
+                    "Lives Remaining: " + player.LivesRemaining.ToString(),
+                    livesPosition,
+                    Color.White);
+            }
+
+            if (gameState == GameState.PlayerDead)
+            {
+            }
+
+            if (gameState == GameState.GameOver)
+            {
+                spriteBatch.DrawString(
+                    pericles8,
+                    "G A M E  O V E R !",
+                    gameOverPosition,
+                    Color.White);
+            }
+
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
     }
 }
