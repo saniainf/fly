@@ -21,7 +21,7 @@ namespace Fly
             //using (var game = new Game1())
             //    game.Run();
 
-            using (var level = new Level())
+            using (var level = new DebugLevel())
                 level.Run();
         }
     }

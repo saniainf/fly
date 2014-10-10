@@ -40,6 +40,7 @@
     <Compile Include="Classes\Particle.cs" />
     <Compile Include="Classes\Sprite.cs" />
     <Compile Include="Classes\Star.cs" />
+    <Compile Include="DebugLevel.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Managers\AsteroidManager.cs" />
@@ -91,7 +92,12 @@
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TiledMap\TiledMap.csproj">
+      <Project>{7b62f9d9-426e-4a60-bd2b-98e958863f4b}</Project>
+      <Name>TiledMap</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
