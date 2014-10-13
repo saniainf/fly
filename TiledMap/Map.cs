@@ -14,12 +14,21 @@ namespace TiledMap
         public int TileWidth;
         public int TileHeight;
 
-
+        public List<TileSet> TileSets;
+        public List<Layer> Layers;
+        public List<ObjectGroup> ObjectGroups;
 
         public enum MapOrientation
         {
             Orthogonal,
             Isometric
+        }
+
+        public Map()
+        {
+            TileSets = new List<TileSet>();
+            Layers = new List<Layer>();
+            ObjectGroups = new List<ObjectGroup>();
         }
     }
 }

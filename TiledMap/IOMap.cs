@@ -4,12 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace TiledMap
 {
     public static class IOMap
     {
-        public static Map Open(string filename)
+        public static Map Open(string filename, ContentManager content)
         {
             Map result = new Map();
             XmlDocument xmlDoc = new XmlDocument();
@@ -29,13 +35,15 @@ namespace TiledMap
                 switch (xmlNode.Name)
                 {
                     case "tileset":
-                        readTileSet();
+                        readTileSet(xmlNode, ref result, content);
                         break;
 
                     case "layer":
+                        readLayer(xmlNode, ref result);
                         break;
 
-                    case "objectgroup" :
+                    case "objectgroup":
+                        readObjectGroup(xmlNode, ref result);
                         break;
 
                 }
@@ -44,9 +52,60 @@ namespace TiledMap
             return result;
         }
 
-        static void readTileSet()
+        static void readTileSet(XmlNode node, ref Map map, ContentManager content)
         {
+            TileSet tileSet = new TileSet();
+            tileSet.FirstGid = node.ReadInt("firstgid");
+            tileSet.Name = node.ReadTag("name");
+            tileSet.TileWidth = node.ReadInt("tilewidth");
+            tileSet.TileHeight = node.ReadInt("tileheight");
+            tileSet.Source = node.ReadTag("source");
+            tileSet.SpriteSheet = content.Load<Texture2D>(@"Textures\" + tileSet.Name);
+            map.TileSets.Add(tileSet);
+        }
 
+        static void readLayer(XmlNode node, ref Map map)
+        {
+            Layer layer = new Layer(node.ReadInt("width"), node.ReadInt("height"));
+            layer.Name = node.ReadTag("name");
+            layer.Visible = node.ReadInt("visible") == 1;
+
+            XmlNode dataNode = node.FirstChild;
+            string[] data = dataNode.InnerXml.Trim('\n', ' ').Replace("\n", "").Split(',', '\n');
+
+            int k = 0;
+            for (int y = 0; y < layer.Height; y++)
+            {
+                for (int x = 0; x < layer.Width; x++)
+                {
+                    layer.Data[x, y] = int.Parse(data[k]);
+                    k++;
+                }
+            }
+            map.Layers.Add(layer);
+        }
+
+        static void readObjectGroup(XmlNode node, ref Map map)
+        {
+            ObjectGroup objectGroup = new ObjectGroup();
+            objectGroup.Name = node.ReadTag("name");
+            objectGroup.Visible = node.ReadInt("visible") == 1;
+
+            if (node.HasChildNodes)
+            {
+                foreach(XmlNode subNode in node.ChildNodes)
+                {
+                    MapObject mapObject = new MapObject();
+                    mapObject.Name = subNode.ReadTag("name");
+                    mapObject.Type = subNode.ReadTag("type");
+                    mapObject.X = subNode.ReadInt("x");
+                    mapObject.Y = subNode.ReadInt("y");
+                    mapObject.Width = subNode.ReadInt("width");
+                    mapObject.Height = subNode.ReadInt("height");
+                    objectGroup.MapObjects.Add(mapObject);
+                }
+            }
+            map.ObjectGroups.Add(objectGroup);
         }
     }
 }

@@ -5,7 +5,19 @@ using System.Text;
 
 namespace TiledMap
 {
-    class Layer
+    public class Layer
     {
+        public string Name;
+        public int Width;
+        public int Height;
+        public bool Visible;
+        public int[,] Data;
+
+        public Layer(int width, int height)
+        {
+            this.Width = width;
+            this.Height = height;
+            Data = new int[width, height];
+        }
     }
 }
