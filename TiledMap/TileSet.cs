@@ -18,7 +18,8 @@ namespace TiledMap
         public int TileWidth;
         public int TileHeight;
         public string Source;
+        public int Width;
+        public int Height;
         public Texture2D SpriteSheet;
-
     }
 }

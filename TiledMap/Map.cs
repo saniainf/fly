@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace TiledMap
 {
@@ -17,6 +23,9 @@ namespace TiledMap
         public List<TileSet> TileSets;
         public List<Layer> Layers;
         public List<ObjectGroup> ObjectGroups;
+        
+        public List<Rectangle> SourceRectangle;
+        public List<int> SourceTileSet;
 
         public enum MapOrientation
         {
@@ -30,5 +39,11 @@ namespace TiledMap
             Layers = new List<Layer>();
             ObjectGroups = new List<ObjectGroup>();
         }
+
+        public void AddTileSet(TileSet tileSet)
+        {
+            TileSets.Add(tileSet);
+        }
+
     }
 }

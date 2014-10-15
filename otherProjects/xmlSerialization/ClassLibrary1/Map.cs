@@ -181,9 +181,9 @@ namespace TiledMax
                     {
                         for (int x = 0; x < r.Width; x++)
                         {
-                            int v = br.ReadInt32();
-                            tempArray[i++] = v;
-                            r.Data[x, y] = v;
+                            //int v = br.ReadInt32();
+                            //tempArray[i++] = v;
+                            //r.Data[x, y] = v;
                         }
                     }
                 }

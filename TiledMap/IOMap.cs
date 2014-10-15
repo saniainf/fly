@@ -59,9 +59,21 @@ namespace TiledMap
             tileSet.Name = node.ReadTag("name");
             tileSet.TileWidth = node.ReadInt("tilewidth");
             tileSet.TileHeight = node.ReadInt("tileheight");
-            tileSet.Source = node.ReadTag("source");
             tileSet.SpriteSheet = content.Load<Texture2D>(@"Textures\" + tileSet.Name);
-            map.TileSets.Add(tileSet);
+
+            if (node.HasChildNodes)
+            {
+                foreach (XmlNode subNode in node.ChildNodes)
+                {
+                    if (subNode.Name == "image")
+                    {
+                        tileSet.Source = subNode.ReadTag("source");
+                        tileSet.Width = subNode.ReadInt("width");
+                        tileSet.Height = subNode.ReadInt("height");
+                    }
+                }
+            }
+            map.AddTileSet(tileSet);
         }
 
         static void readLayer(XmlNode node, ref Map map)
@@ -93,7 +105,7 @@ namespace TiledMap
 
             if (node.HasChildNodes)
             {
-                foreach(XmlNode subNode in node.ChildNodes)
+                foreach (XmlNode subNode in node.ChildNodes)
                 {
                     MapObject mapObject = new MapObject();
                     mapObject.Name = subNode.ReadTag("name");
