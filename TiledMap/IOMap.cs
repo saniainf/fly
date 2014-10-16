@@ -65,11 +65,16 @@ namespace TiledMap
             {
                 foreach (XmlNode subNode in node.ChildNodes)
                 {
-                    if (subNode.Name == "image")
+                    switch (subNode.Name)
                     {
-                        tileSet.Source = subNode.ReadTag("source");
-                        tileSet.Width = subNode.ReadInt("width");
-                        tileSet.Height = subNode.ReadInt("height");
+                        case "image":
+                            tileSet.Source = subNode.ReadTag("source");
+                            tileSet.Width = subNode.ReadInt("width");
+                            tileSet.Height = subNode.ReadInt("height");
+                            break;
+
+                        case "tile":
+                            break;
                     }
                 }
             }

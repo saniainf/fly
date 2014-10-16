@@ -78,10 +78,10 @@
     <Content Include="Content\Textures\level.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\mockup.png">
+    <Content Include="Content\Textures\mockup_lv1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\mockup_lv3.png">
+    <Content Include="Content\Textures\mockup_lv2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\plane.png">
@@ -107,6 +107,7 @@
   <ItemGroup>
     <None Include="levelTest1.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
