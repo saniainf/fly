@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{17D18390-5FE3-4CBD-A192-5BCE86CBB0CB}</ProjectGuid>
+    <ProjectGuid>{CC636F2C-C680-4EDC-9A6B-78579E3344B5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fly</RootNamespace>
-    <AssemblyName>Fly</AssemblyName>
+    <RootNamespace>Space</RootNamespace>
+    <AssemblyName>Space</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -35,23 +35,10 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Classes\CollisionSprite.cs" />
-    <Compile Include="Classes\Enemy.cs" />
-    <Compile Include="Classes\Particle.cs" />
+    <Compile Include="Classes\Layer.cs" />
     <Compile Include="Classes\Sprite.cs" />
-    <Compile Include="Classes\Star.cs" />
-    <Compile Include="DebugLevel.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="Level.cs" />
-    <Compile Include="Managers\AsteroidManager.cs" />
-    <Compile Include="Managers\CollisionManager.cs" />
-    <Compile Include="Managers\EnemyManager.cs" />
-    <Compile Include="Managers\ExplosionManager.cs" />
-    <Compile Include="Managers\PlayerManager.cs" />
-    <Compile Include="Managers\ShotManager.cs" />
-    <Compile Include="Managers\StarField.cs" />
-    <Compile Include="Managers\TestSpriteManger.cs" />
-    <Compile Include="Other\enemyTmp.cs" />
+    <Compile Include="Components\Level.cs" />
+    <Compile Include="SpaceGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,45 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Textures\asteroid.png">
+    <Content Include="Content\Textures\Levels\mockup_lv1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Textures\bullet.png">
+    <Content Include="Content\Textures\Levels\mockup_lv2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\deform.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\interface.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\level.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\mockup_lv1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\mockup_lv2.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\plane.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\sky.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\spaceShip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Content\Textures\spriteSheet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="levelTest1.tmx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +70,7 @@
       <Name>TiledMap</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

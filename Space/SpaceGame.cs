@@ -7,23 +7,29 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
-using Fly.Managers;
-using Fly.Classes;
-using TiledMap;
+using Space.Classes;
+using Space.Components;
 #endregion
 
-namespace Fly
+namespace Space
 {
-    public class DebugLevel : Game
+    /// <summary>
+    /// This is the main type for your game
+    /// </summary>
+    public class SpaceGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Level level;
 
-        public DebugLevel()
+        public SpaceGame()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 640;
         }
 
         /// <summary>
@@ -47,6 +53,8 @@ namespace Fly
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            level = new Level(Content);
         }
 
         /// <summary>
@@ -65,10 +73,7 @@ namespace Fly
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
+            level.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -79,9 +84,10 @@ namespace Fly
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            level.Draw(spriteBatch);
 
             base.Draw(gameTime);
         }

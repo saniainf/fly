@@ -15,7 +15,7 @@ namespace TiledMap
 {
     public static class IOMap
     {
-        public static Map Open(string filename, ContentManager content)
+        public static Map Open(string filename, ContentManager content, string contentPath)
         {
             Map result = new Map();
             XmlDocument xmlDoc = new XmlDocument();
@@ -35,7 +35,7 @@ namespace TiledMap
                 switch (xmlNode.Name)
                 {
                     case "tileset":
-                        readTileSet(xmlNode, ref result, content);
+                        readTileSet(xmlNode, ref result, content, contentPath);
                         break;
 
                     case "layer":
@@ -52,14 +52,14 @@ namespace TiledMap
             return result;
         }
 
-        static void readTileSet(XmlNode node, ref Map map, ContentManager content)
+        static void readTileSet(XmlNode node, ref Map map, ContentManager content, string contentPath)
         {
             TileSet tileSet = new TileSet();
             tileSet.FirstGid = node.ReadInt("firstgid");
             tileSet.Name = node.ReadTag("name");
             tileSet.TileWidth = node.ReadInt("tilewidth");
             tileSet.TileHeight = node.ReadInt("tileheight");
-            tileSet.SpriteSheet = content.Load<Texture2D>(@"Textures\" + tileSet.Name);
+            tileSet.SpriteSheet = content.Load<Texture2D>(contentPath + tileSet.Name);
 
             if (node.HasChildNodes)
             {
