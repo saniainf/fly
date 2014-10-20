@@ -15,10 +15,15 @@ namespace Space.Classes
 {
     class Layer
     {
-        List<Sprite> sprites = new List<Sprite>();
+        public Vector2 Parallax;
+        public List<Sprite> Sprites = new List<Sprite>();
+        private Camera camera;
+        
 
-        public Layer(tm.Layer tmLayer, tm.Map tmMap)
+        public Layer(tm.Layer tmLayer, tm.Map tmMap, Camera camera)
         {
+            this.camera = camera;
+            Parallax = Vector2.Zero;
             int sSize = 32;
             for (int y = 0; y < tmLayer.Data.GetLength(1); y++)
             {
@@ -27,7 +32,7 @@ namespace Space.Classes
                     int k = tmLayer.Data[x, y];
                     if (k != 0)
                     {
-                        sprites.Add(new Sprite(
+                        Sprites.Add(new Sprite(
                             tmMap.TileSets[tmMap.SourceTileSet[k] - 1].SpriteSheet,
                             new Rectangle(x * sSize, y * sSize, sSize, sSize),
                             tmMap.SourceRectangle[k]));
@@ -38,8 +43,12 @@ namespace Space.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Sprite sprite in sprites)
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null, null, camera.GetViewMatrix(Parallax));
+
+            foreach (Sprite sprite in Sprites)
                 sprite.Draw(spriteBatch);
+
+            spriteBatch.End();
         }
     }
 }

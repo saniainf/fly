@@ -17,17 +17,20 @@ namespace Space.Components
     {
         private List<Layer> layers;
 
-        public Level(ContentManager content)
+        public Level(ContentManager content, Camera camera)
         {
             tm.Map map = tm.IOMap.Open(@"levelTest1.tmx", content, @"Textures\Levels\");
             //---
 
             layers = new List<Layer>();
 
-            foreach (TiledMap.Layer tmLayer in map.Layers)
-            {
-                layers.Add(new Layer(tmLayer, map));
-            }
+            //foreach (TiledMap.Layer tmLayer in map.Layers)
+            //{
+            //    layers.Add(new Layer(tmLayer, map, camera));
+            //}
+            camera.Limits = new Rectangle(0, 0, 4096, 640);
+            layers.Add(new Layer(map.Layers[0], map, camera) { Parallax = new Vector2(0.8f, 1.0f) });
+            layers.Add(new Layer(map.Layers[1], map, camera) { Parallax = new Vector2(1.0f, 1.0f) });
         }
 
         public void Update(GameTime gameTime)
@@ -35,12 +38,10 @@ namespace Space.Components
 
         }
 
-        public void Draw (SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin();
             foreach (Layer layer in layers)
                 layer.Draw(spriteBatch);
-            spriteBatch.End();
         }
     }
 }

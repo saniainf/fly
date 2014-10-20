@@ -21,6 +21,7 @@ namespace Space
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Level level;
+        Camera camera;
 
         public SpaceGame()
             : base()
@@ -53,8 +54,8 @@ namespace Space
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            level = new Level(Content);
+            camera = new Camera(GraphicsDevice.Viewport);
+            level = new Level(Content, camera);
         }
 
         /// <summary>
@@ -73,6 +74,15 @@ namespace Space
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+                camera.Move(new Vector2(400.0f * elapsedTime, 0.0f));
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+                camera.Move(new Vector2(-400.0f * elapsedTime, 0.0f));
+
             level.Update(gameTime);
 
             base.Update(gameTime);
