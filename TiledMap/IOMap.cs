@@ -87,16 +87,29 @@ namespace TiledMap
             layer.Name = node.ReadTag("name");
             layer.Visible = node.ReadInt("visible") == 1;
 
-            XmlNode dataNode = node.FirstChild;
-            string[] data = dataNode.InnerXml.Trim('\n', ' ').Replace("\n", "").Split(',', '\n');
-
-            int k = 0;
-            for (int y = 0; y < layer.Height; y++)
+            foreach (XmlNode subNode in node)
             {
-                for (int x = 0; x < layer.Width; x++)
+                switch (subNode.Name)
                 {
-                    layer.Data[x, y] = int.Parse(data[k]);
-                    k++;
+                    case "properties":
+                        foreach (XmlNode propNode in subNode)
+                        {
+                            layer.Properties.Add(propNode.ReadTag("name"), propNode.ReadTag("value"));
+                        }
+                        break;
+
+                    case "data":
+                        string[] data = subNode.InnerXml.Trim('\n', ' ').Replace("\n", "").Split(',', '\n');
+                        int k = 0;
+                        for (int y = 0; y < layer.Height; y++)
+                        {
+                            for (int x = 0; x < layer.Width; x++)
+                            {
+                                layer.Data[x, y] = int.Parse(data[k]);
+                                k++;
+                            }
+                        }
+                        break;
                 }
             }
             map.Layers.Add(layer);

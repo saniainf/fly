@@ -12,12 +12,14 @@ namespace TiledMap
         public int Height;
         public bool Visible;
         public int[,] Data;
+        public Properties Properties;
 
         public Layer(int width, int height)
         {
             this.Width = width;
             this.Height = height;
             Data = new int[width, height];
+            Properties = new Properties();
         }
     }
 }

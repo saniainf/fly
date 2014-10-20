@@ -22,9 +22,12 @@ namespace Space.Classes
 
         public Layer(tm.Layer tmLayer, tm.Map tmMap, Camera camera)
         {
+            int tileWidth = tmMap.TileWidth;
+            int tileHeight = tmMap.TileHeight;
+
             this.camera = camera;
             Parallax = Vector2.Zero;
-            int sSize = 32;
+
             for (int y = 0; y < tmLayer.Data.GetLength(1); y++)
             {
                 for (int x = 0; x < tmLayer.Data.GetLength(0); x++)
@@ -33,8 +36,8 @@ namespace Space.Classes
                     if (k != 0)
                     {
                         Sprites.Add(new Sprite(
-                            tmMap.TileSets[tmMap.SourceTileSet[k] - 1].SpriteSheet,
-                            new Rectangle(x * sSize, y * sSize, sSize, sSize),
+                            tmMap.TileSets[tmMap.SourceTileSet[k]].SpriteSheet,
+                            new Rectangle(x * tileWidth, y * tileHeight, tileWidth, tileHeight),
                             tmMap.SourceRectangle[k]));
                     }
                 }

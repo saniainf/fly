@@ -56,7 +56,7 @@ namespace TiledMap
             totalTile = tileByX * tileByY;
 
             for (int i = 0; i < totalTile; i++)
-                SourceTileSet.Add(TileSets.Count);
+                SourceTileSet.Add(TileSets.Count - 1);
 
             for (int y = 0; y < tileByY; y++)
             {

@@ -23,14 +23,13 @@ namespace Space.Components
             //---
 
             layers = new List<Layer>();
+            camera.Limits = new Rectangle(0, 0, map.TileWidth * map.Width, map.TileHeight * map.Height);
 
-            //foreach (TiledMap.Layer tmLayer in map.Layers)
-            //{
-            //    layers.Add(new Layer(tmLayer, map, camera));
-            //}
-            camera.Limits = new Rectangle(0, 0, 4096, 640);
-            layers.Add(new Layer(map.Layers[0], map, camera) { Parallax = new Vector2(0.8f, 1.0f) });
-            layers.Add(new Layer(map.Layers[1], map, camera) { Parallax = new Vector2(1.0f, 1.0f) });
+            foreach (TiledMap.Layer tmLayer in map.Layers)
+            {
+                float[] properties = tmLayer.Properties["parallax"].ToFloat(';');
+                layers.Add(new Layer(tmLayer, map, camera) { Parallax = new Vector2((properties[0]), (properties[1])) });
+            }
         }
 
         public void Update(GameTime gameTime)
