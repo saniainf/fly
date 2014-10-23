@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
+    <Compile Include="Classes\GameObject.cs" />
     <Compile Include="Classes\Layer.cs" />
     <Compile Include="Classes\Sprite.cs" />
     <Compile Include="Components\Level.cs" />

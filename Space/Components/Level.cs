@@ -13,7 +13,7 @@ using tm = TiledMap;
 
 namespace Space.Components
 {
-    class Level
+    class Level : GameObject
     {
         private List<Layer> layers;
 
@@ -32,12 +32,12 @@ namespace Space.Components
             }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
 
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (Layer layer in layers)
                 layer.Draw(spriteBatch);

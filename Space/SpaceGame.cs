@@ -18,10 +18,11 @@ namespace Space
     /// </summary>
     public class SpaceGame : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Level level;
-        Camera camera;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Level level;
+        private Camera camera;
+        private List<GameObject> gameObjects;
 
         public SpaceGame()
             : base()
@@ -55,6 +56,8 @@ namespace Space
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             camera = new Camera(GraphicsDevice.Viewport);
+            gameObjects = new List<GameObject>();
+
             level = new Level(Content, camera);
         }
 
@@ -100,6 +103,11 @@ namespace Space
             level.Draw(spriteBatch);
 
             base.Draw(gameTime);
+        }
+
+        public void AddGameObject(GameObject go)
+        {
+            gameObjects.Add(go);
         }
     }
 }
