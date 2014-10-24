@@ -20,9 +20,10 @@ namespace Space
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        private Level level;
-        private Camera camera;
-        private List<GameObject> gameObjects;
+        
+        private static Level level;
+        private static Camera camera;
+        private static List<GameObject> gameObjects;
 
         public SpaceGame()
             : base()
@@ -105,7 +106,7 @@ namespace Space
             base.Draw(gameTime);
         }
 
-        public void AddGameObject(GameObject go)
+        public static void AddGameObject(GameObject go)
         {
             gameObjects.Add(go);
         }
