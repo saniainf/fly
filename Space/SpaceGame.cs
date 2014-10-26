@@ -16,16 +16,16 @@ namespace Space
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class SpaceGame : Game
+    public class Main : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         
-        private static Level level;
-        private static Camera camera;
-        private static List<GameObject> gameObjects;
+        private Level level;
 
-        public SpaceGame()
+        public static List<GameObject> gameObjects;
+
+        public Main()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -56,10 +56,10 @@ namespace Space
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            camera = new Camera(GraphicsDevice.Viewport);
             gameObjects = new List<GameObject>();
+            Camera.CreateCamera(GraphicsDevice.Viewport);
 
-            level = new Level(Content, camera);
+            level = new Level(Content);
         }
 
         /// <summary>
@@ -78,16 +78,10 @@ namespace Space
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            KeyboardState keyboardState = Keyboard.GetState();
+            keyboardInput(gameTime);
 
-            if (keyboardState.IsKeyDown(Keys.Right))
-                camera.Move(new Vector2(400.0f * elapsedTime, 0.0f));
-
-            if (keyboardState.IsKeyDown(Keys.Left))
-                camera.Move(new Vector2(-400.0f * elapsedTime, 0.0f));
-
-            level.Update(gameTime);
+            foreach (GameObject go in gameObjects)
+                go.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -101,14 +95,22 @@ namespace Space
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            level.Draw(spriteBatch);
-
+            foreach (GameObject go in gameObjects)
+                go.Draw(spriteBatch);
+            
             base.Draw(gameTime);
         }
 
-        public static void AddGameObject(GameObject go)
+        private void keyboardInput(GameTime gameTime)
         {
-            gameObjects.Add(go);
+            float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+                Camera.Move(new Vector2(400.0f * elapsedTime, 0.0f));
+
+            if (keyboardState.IsKeyDown(Keys.Left))
+                Camera.Move(new Vector2(-400.0f * elapsedTime, 0.0f));
         }
     }
 }

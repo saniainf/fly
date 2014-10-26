@@ -17,15 +17,12 @@ namespace Space.Classes
     {
         public Vector2 Parallax;
         public List<Sprite> Sprites = new List<Sprite>();
-        private Camera camera;
-        
 
-        public Layer(tm.Layer tmLayer, tm.Map tmMap, Camera camera)
+        public Layer(tm.Layer tmLayer, tm.Map tmMap)
         {
             int tileWidth = tmMap.TileWidth;
             int tileHeight = tmMap.TileHeight;
 
-            this.camera = camera;
             Parallax = Vector2.Zero;
 
             for (int y = 0; y < tmLayer.Data.GetLength(1); y++)
@@ -46,7 +43,7 @@ namespace Space.Classes
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null, null, camera.GetViewMatrix(Parallax));
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null, null, Camera.GetViewMatrix(Parallax));
 
             foreach (Sprite sprite in Sprites)
                 sprite.Draw(spriteBatch);

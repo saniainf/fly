@@ -7,29 +7,29 @@ using Microsoft.Xna.Framework;
 
 namespace Space.Classes
 {
-    class Camera
+    public static class Camera
     {
-        public Vector2 Origin;
-        public float Zoom;
-        public float Rotation;
-        private Viewport viewport;
-        private Rectangle limits;
-        private Vector2 position;
+        public static Vector2 Origin;
+        public static float Zoom;
+        public static float Rotation;
+        public static Viewport Viewport;
+        static Rectangle limits;
+        static Vector2 position;
 
-        public Vector2 Position
+        public static Vector2 Position
         {
             get
             { return position; }
             set
             {
                 position = value;
-                position.X = MathHelper.Clamp(position.X, Limits.X, Limits.X + Limits.Width - viewport.Width);
-                position.Y = MathHelper.Clamp(position.Y, Limits.Y, Limits.Y + Limits.Height - viewport.Height);
+                position.X = MathHelper.Clamp(position.X, Limits.X, Limits.X + Limits.Width - Viewport.Width);
+                position.Y = MathHelper.Clamp(position.Y, Limits.Y, Limits.Y + Limits.Height - Viewport.Height);
 
             }
         }
 
-        public Rectangle Limits
+        public static Rectangle Limits
         {
             get
             { return limits; }
@@ -38,20 +38,20 @@ namespace Space.Classes
                 limits = new Rectangle(
                     value.X,
                     value.Y,
-                    System.Math.Max(viewport.Width, value.Width),
-                    System.Math.Max(viewport.Height, value.Height));
+                    System.Math.Max(Viewport.Width, value.Width),
+                    System.Math.Max(Viewport.Height, value.Height));
                 Position = Position;
             }
         }
 
-        public Camera(Viewport viewport)
+        public static void CreateCamera(Viewport viewport)
         {
-            this.viewport = viewport;
+            Viewport = viewport;
             Origin = new Vector2(viewport.Width / 2.0f, viewport.Height / 2.0f);
             Zoom = 1.0f;
         }
 
-        public Matrix GetViewMatrix(Vector2 parallax)
+        public static Matrix GetViewMatrix(Vector2 parallax)
         {
             return Matrix.CreateTranslation(new Vector3(-Position * parallax, 0.0f)) *
                    Matrix.CreateTranslation(new Vector3(-Origin, 0.0f)) *
@@ -60,7 +60,7 @@ namespace Space.Classes
                    Matrix.CreateTranslation(new Vector3(Origin, 0.0f));
         }
 
-        public void Move(Vector2 displacement, bool respectRotation = false)
+        public static void Move(Vector2 displacement, bool respectRotation = false)
         {
             if (respectRotation)
                 displacement = Vector2.Transform(displacement, Matrix.CreateRotationZ(-Rotation));

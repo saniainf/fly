@@ -40,6 +40,7 @@
     <Compile Include="Classes\Layer.cs" />
     <Compile Include="Classes\Sprite.cs" />
     <Compile Include="Components\Level.cs" />
+    <Compile Include="Enums\GameStates.cs" />
     <Compile Include="SpaceGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
