@@ -13,8 +13,8 @@ namespace Space.Classes
         public static float Zoom;
         public static float Rotation;
         public static Viewport Viewport;
-        static Rectangle limits;
-        static Vector2 position;
+        private static Rectangle limits;
+        private static Vector2 position;
 
         public static Vector2 Position
         {

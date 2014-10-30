@@ -23,7 +23,7 @@ namespace Space
         
         private Level level;
 
-        public static List<GameObject> gameObjects;
+        public static List<SGComponent> sgComponents;
 
         public Main()
             : base()
@@ -56,7 +56,7 @@ namespace Space
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            gameObjects = new List<GameObject>();
+            sgComponents = new List<SGComponent>();
             Camera.CreateCamera(GraphicsDevice.Viewport);
 
             level = new Level(Content);
@@ -80,8 +80,8 @@ namespace Space
         {
             keyboardInput(gameTime);
 
-            foreach (GameObject go in gameObjects)
-                go.Update(gameTime);
+            foreach (SGComponent sgc in sgComponents)
+                sgc.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -95,8 +95,8 @@ namespace Space
             GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
-            foreach (GameObject go in gameObjects)
-                go.Draw(spriteBatch);
+            foreach (SGComponent sgc in sgComponents)
+                sgc.Draw(spriteBatch);
             
             base.Draw(gameTime);
         }

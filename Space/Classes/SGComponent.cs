@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Space.Classes
 {
-    public class GameObject
+    public class SGComponent
     {
         public virtual void Update(GameTime gameTime)
         {
