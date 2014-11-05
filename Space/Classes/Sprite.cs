@@ -21,6 +21,11 @@ namespace Space.Classes
             set { rotation = value % MathHelper.TwoPi; }
         }
 
+        public Vector2 Center
+        {
+            get { return new Vector2(DestinationRectangle.X, DestinationRectangle.Y) + new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2); }
+        }
+
         public Sprite(Texture2D texture, Rectangle destinationRectangle, Rectangle sourceRectangle, Color tintColor)
         {
             Texture = texture;
@@ -39,7 +44,7 @@ namespace Space.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null)
-                spriteBatch.Draw(Texture, DestinationRectangle, SourceRectangle, TintColor);
+                spriteBatch.Draw(Texture, DestinationRectangle, SourceRectangle, TintColor, rotation, new Vector2(), SpriteEffects.None, 1.0f);
         }
     }
 }

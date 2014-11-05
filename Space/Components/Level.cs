@@ -16,6 +16,7 @@ namespace Space.Components
     class Level : SGComponent
     {
         private List<Layer> layers = new List<Layer>();
+        private StarField starField = new StarField();
 
         public Level(ContentManager content)
         {
