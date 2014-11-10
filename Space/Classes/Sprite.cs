@@ -12,8 +12,8 @@ namespace Space.Classes
         public Texture2D Texture;
         public Rectangle DestinationRectangle;
         public Rectangle SourceRectangle;
-        public float rotation;
         public Color TintColor = Color.White;
+        private float rotation;
 
         public float Rotation
         {
@@ -44,7 +44,9 @@ namespace Space.Classes
         public void Draw(SpriteBatch spriteBatch)
         {
             if (Texture != null)
-                spriteBatch.Draw(Texture, DestinationRectangle, SourceRectangle, TintColor, rotation, new Vector2(), SpriteEffects.None, 1.0f);
+            {
+                spriteBatch.Draw(Texture, Center, SourceRectangle, TintColor, rotation, new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2), 1.0f, SpriteEffects.None, 1.0f);
+            }
         }
     }
 }

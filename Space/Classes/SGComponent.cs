@@ -13,10 +13,5 @@ namespace Space.Classes
         {
 
         }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-
-        }
     }
 }

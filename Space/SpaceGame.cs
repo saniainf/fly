@@ -20,10 +20,10 @@ namespace Space
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
-        
+
         private Level level;
 
-        public static List<SGComponent> sgComponents;
+        public static Dictionary<string, SGComponent> sgComponents;
 
         public Main()
             : base()
@@ -56,7 +56,7 @@ namespace Space
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            sgComponents = new List<SGComponent>();
+            sgComponents = new Dictionary<string, SGComponent>();
             Camera.CreateCamera(GraphicsDevice.Viewport);
 
             level = new Level(Content);
@@ -80,7 +80,7 @@ namespace Space
         {
             keyboardInput(gameTime);
 
-            foreach (SGComponent sgc in sgComponents)
+            foreach (SGComponent sgc in sgComponents.Values)
                 sgc.Update(gameTime);
 
             base.Update(gameTime);
@@ -93,11 +93,9 @@ namespace Space
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-
-            // TODO: Add your drawing code here
-            foreach (SGComponent sgc in sgComponents)
-                sgc.Draw(spriteBatch);
             
+            level.Draw(spriteBatch);
+
             base.Draw(gameTime);
         }
 

@@ -5,12 +5,10 @@ using System.Text;
 
 namespace Space.Classes
 {
-    class AnimationSprite
+    class AnimationSprite 
     {
         public Dictionary<string, Animation> animation;
         private AnimationPlayer animationPlayer;
-        private Sprite sprite;
-
 
     }
 }

@@ -21,7 +21,7 @@ namespace Space.Components
         public Level(ContentManager content)
         {
             loadMap(content);
-            Main.sgComponents.Add(this);
+            Main.sgComponents.Add("level", this);
         }
 
         private void loadMap(ContentManager content)
@@ -46,8 +46,6 @@ namespace Space.Components
         {
             foreach (Layer layer in layers)
                 layer.Draw(spriteBatch);
-
-            base.Draw(spriteBatch);
         }
     }
 }

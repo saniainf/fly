@@ -19,7 +19,7 @@ namespace Space.Components
         public StarField()
         {
             stars = new List<SGAnimationObject>();
-            Main.sgComponents.Add(this);
+            Main.sgComponents.Add("starfield", this);
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +32,7 @@ namespace Space.Components
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            foreach(SGAnimationObject star in stars)
+            foreach (SGAnimationObject star in stars)
             {
                 star.Draw(spriteBatch);
             }
