@@ -16,7 +16,6 @@ namespace Space.Components
     class Level : SGComponent
     {
         private List<Layer> layers = new List<Layer>();
-        private StarField starField = new StarField();
 
         public Level(ContentManager content)
         {
@@ -42,7 +41,7 @@ namespace Space.Components
             base.Update(gameTime);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
             foreach (Layer layer in layers)
                 layer.Draw(spriteBatch);
